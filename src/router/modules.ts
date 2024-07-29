@@ -3,26 +3,26 @@ import type { RouteRecordRaw } from 'vue-router'
 const Layout = () => import('@/layout/index.vue')
 
 const routeModuleList: Array<RouteRecordRaw> = [
-  {
-    path: '/dashboard',
-    name: 'Dashboard',
-    redirect: '/dashboard/index',
-    component: Layout,
-    meta: {
-      title: '主控台',
-      icon: 'i-simple-icons:atlassian',
-    },
-    children: [
-      {
-        path: 'index',
-        name: 'DashboardPage',
-        meta: {
-          keepAlive: false,
-        },
-        component: () => import('@/views/dashboard/index.vue'),
-      },
-    ],
-  },
+  // {
+  //   path: '/dashboard',
+  //   name: 'Dashboard',
+  //   redirect: '/dashboard/index',
+  //   component: Layout,
+  //   meta: {
+  //     title: '主控台',
+  //     icon: 'i-simple-icons:atlassian',
+  //   },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'DashboardPage',
+  //       meta: {
+  //         keepAlive: false,
+  //       },
+  //       component: () => import('@/views/dashboard/index.vue'),
+  //     },
+  //   ],
+  // },
   {
     path: '/message',
     name: 'Message',
