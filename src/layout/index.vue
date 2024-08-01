@@ -18,16 +18,11 @@
       </template>
     </routerView>
     <van-tabbar route class="tabbar">
-      <van-tabbar-item
-        v-for="menu in getMenus"
-        :key="menu.name"
-        replace
-        :to="menu.path"
-      >
-        <template #icon>
-          <i :class="menu.meta?.icon" />
+      <van-tabbar-item v-for="menu in getMenus" :key="menu.name" replace :to="menu.path">
+        <template #icon="props">
+          <img :src="props.active ? menu.meta?.iconActive : menu.meta?.iconNormal" />
         </template>
-        {{ menu.meta?.title }}
+        <!-- {{ menu.meta?.title }} -->
       </van-tabbar-item>
     </van-tabbar>
   </div>

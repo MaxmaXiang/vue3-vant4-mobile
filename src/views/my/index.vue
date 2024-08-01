@@ -50,6 +50,16 @@
         </template>
       </van-cell>
 
+
+      <van-cell center title="🌓 暗黑模式">
+        <template #right-icon>
+          <i inline-block align-middle i="dark:carbon-moon carbon-sun" />
+          <span class="ml-2">{{ isDark ? 'Dark' : 'Light' }}</span>
+          <span class="mx-2">{{ isDark }}</span>
+          <van-switch v-model="checked" size="22" @click="toggle()" />
+        </template>
+      </van-cell>
+
       <van-action-sheet
         v-model:show="showLogoutAction"
         teleport="body"
@@ -65,6 +75,24 @@
 <script lang="ts" setup>
 import { showToast } from 'vant'
 import { useUserStore } from '@/store/modules/user'
+import { useDark, useToggle } from '@vueuse/core'
+import { useDesignSettingStore } from '@/store/modules/designSetting'
+
+const designStore = useDesignSettingStore()
+const isDark = useDark({
+  valueDark: 'dark',
+  valueLight: 'light',
+})
+
+const checked = ref(isDark.value)
+
+const toggleDark = useToggle(isDark)
+
+function toggle() {
+  toggleDark()
+  designStore.setDarkMode(isDark.value ? 'dark' : 'light')
+}
+
 
 const userStore = useUserStore()
 const showLogoutAction = ref(false)

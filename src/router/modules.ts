@@ -1,6 +1,13 @@
 import type { RouteRecordRaw } from 'vue-router'
-
 const Layout = () => import('@/layout/index.vue')
+
+import count_black from '@/assets/icons/count_black.svg'
+import count_blue from '@/assets/icons/count_blue.svg'
+import date_black from '@/assets/icons/date_black.svg'
+import date_blue from '@/assets/icons/date_blue.svg'
+import setting_black from '@/assets/icons/setting_black.svg'
+import setting_blue from '@/assets/icons/setting_blue.svg'
+
 
 const routeModuleList: Array<RouteRecordRaw> = [
   // {
@@ -30,7 +37,8 @@ const routeModuleList: Array<RouteRecordRaw> = [
     component: Layout,
     meta: {
       title: '图表',
-      icon: 'i-simple-icons:soundcharts',
+      iconNormal: count_black,
+      iconActive: count_blue,
     },
     children: [
       {
@@ -50,7 +58,8 @@ const routeModuleList: Array<RouteRecordRaw> = [
     component: Layout,
     meta: {
       title: '示例',
-      icon: 'i-material-symbols:award-star',
+      iconNormal: date_black,
+      iconActive: date_blue,
     },
     children: [
       {
@@ -70,7 +79,8 @@ const routeModuleList: Array<RouteRecordRaw> = [
     component: Layout,
     meta: {
       title: '我的',
-      icon: 'i-simple-icons:docsify',
+      iconNormal: setting_black,
+      iconActive: setting_blue,
     },
     children: [
       {
