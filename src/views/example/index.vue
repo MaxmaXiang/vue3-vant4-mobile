@@ -17,17 +17,13 @@
   <div>
 
     <van-row>
-      <van-col span="8"><van-button type="primary">主要按钮</van-button></van-col>
-      <van-col span="8"><van-button type="success">成功按钮</van-button></van-col>
-      <van-col span="8"><van-image round width="5rem" height="5rem" :src="plus" /></van-col>
+      <van-col span="5"><van-button type="primary" size="small">主要按钮</van-button></van-col>
+      <van-col span="5"><van-button type="success" size="small">成功按钮</van-button></van-col>
+      <van-col span="5" offset="9"><van-image round width="3rem" height="3rem" :src="plus" /></van-col>
     </van-row>
-    <van-row>
-      <van-col span="4">span: 4</van-col>
-      <van-col span="10" offset="4">offset: 4, span: 10</van-col>
-    </van-row>
-    <van-row>
-      <van-col offset="12" span="12">offset: 12, span: 12</van-col>
-    </van-row>
+    <income />
+    <income/>
+
   </div>
 </template>
 
@@ -35,27 +31,15 @@
 import { useDark, useToggle } from '@vueuse/core'
 import { useDesignSettingStore } from '@/store/modules/designSetting'
 import { showDialog } from 'vant';
+import income from '@/views/example/components/income.vue'
 
 import plus from '@/assets/icons/plus.svg'
 
-const list = ref([]);
-const loading = ref(false);
-const finished = ref(false);
-const onLoad = () => {
-  // 异步更新数据
-  // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-  setTimeout(() => {
-    for (let i = 0; i < 10; i++) {
-      list.value.push(list.value.length + 1);
-    }
-    // 加载状态结束
-    loading.value = false;
-    // 数据全部加载完成
-    if (list.value.length >= 40) {
-      finished.value = true;
-    }
-  }, 1000);
-};
+const loading = ref(true);
+onMounted(() => {
+  loading.value = false;
+});
+
 
 const designStore = useDesignSettingStore()
 
@@ -79,4 +63,17 @@ const menuItems = [
 ]
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="scss">
+.content {
+  height: 45%;
+  overflow-y: scroll;
+
+  .item {
+    padding: 12px 0;
+
+    &:nth-child(even) {
+      background-color: #ebf6f9;
+    }
+  }
+}
+</style>
