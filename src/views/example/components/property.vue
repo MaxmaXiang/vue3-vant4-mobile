@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <van-cell-group>
-            <van-cell title="收入" :border="false" style="height: 35px;" center />
+            <van-cell title="资产" :border="false" style="height: 35px;" center />
             <van-pull-refresh v-model="isLoadingPull" @refresh="onRefresh">
                 <van-list class="scroll-list" v-model:loading="loading" :finished="finished" finished-text="没有更多了"
                 @load="onLoad">
@@ -10,8 +10,7 @@
                 </van-row>
             </van-list>
         </van-pull-refresh>
-        <van-cell title="总收入" :border="false" style="height: 35px;" center />
-        <van-cell title="支出" :border="false" style="height: 35px;" center />
+        <van-cell title="负债" :border="false" style="height: 35px;" center />
         <van-pull-refresh v-model="isLoadingPull" @refresh="onRefresh">
             <van-list class="scroll-list" v-model:loading="loading" :finished="finished" finished-text="没有更多了"
             @load="onLoad">
@@ -20,8 +19,6 @@
             </van-row>
         </van-list>
     </van-pull-refresh>
-    <van-cell title="总支出" :border="false" style="height: 35px;" center />
-    <van-cell title="每月净现金流" :border="false" style="height: 35px;" center />
         </van-cell-group>
     </div>
 </template>

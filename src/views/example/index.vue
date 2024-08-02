@@ -14,16 +14,15 @@
       </template>
 </van-cell-group>
 </div> -->
-  <div>
 
-    <van-row>
-      <van-col span="5"><van-button type="primary" size="small">主要按钮</van-button></van-col>
-      <van-col span="5"><van-button type="success" size="small">成功按钮</van-button></van-col>
-      <van-col span="5" offset="9"><van-image round width="3rem" height="3rem" :src="plus" /></van-col>
+  <div class="main">
+    <van-row class="head">
+      <van-col span="5"><van-button plain hairline type="default" size="small" @click="changeToIncome()">收入状况</van-button></van-col>
+      <van-col span="5"><van-button plain hairline type="default" size="small" @click="changeTopropertyShow()">资产负债表</van-button></van-col>
+      <van-col span="5" offset="9"><van-image position="center" width="4rem" height="4rem" :src="plus" /></van-col>
     </van-row>
-    <income />
-    <income/>
-
+    <income class="content" v-show="incomeShow"/>
+    <property class="content" v-show="propertyShow"/>
   </div>
 </template>
 
@@ -32,48 +31,66 @@ import { useDark, useToggle } from '@vueuse/core'
 import { useDesignSettingStore } from '@/store/modules/designSetting'
 import { showDialog } from 'vant';
 import income from '@/views/example/components/income.vue'
+import property from '@/views/example/components/property.vue'
 
 import plus from '@/assets/icons/plus.svg'
 
-const loading = ref(true);
-onMounted(() => {
-  loading.value = false;
-});
+let incomeShow=ref(true)
+let propertyShow=ref(false)
 
-
-const designStore = useDesignSettingStore()
-
-const isDark = useDark({
-  valueDark: 'dark',
-  valueLight: 'light',
-})
-
-const checked = ref(isDark.value)
-
-const toggleDark = useToggle(isDark)
-
-function toggle() {
-  toggleDark()
-  designStore.setDarkMode(isDark.value ? 'dark' : 'light')
+function changeTopropertyShow(){
+  propertyShow.value=true;
+  incomeShow.value=false;
 }
+function changeToIncome(){
+  propertyShow.value=false;
+  incomeShow.value=true;
+}
+// const loading = ref(true);
+// onMounted(() => {
+//   loading.value = false;
+// });
 
-const menuItems = [
-  { title: '🐗 keep-alive', route: '/editNickname' },
-  { title: '🦘 404 页演示', route: '/404' },
-]
+
+// const designStore = useDesignSettingStore()
+
+// const isDark = useDark({
+//   valueDark: 'dark',
+//   valueLight: 'light',
+// })
+
+// const checked = ref(isDark.value)
+
+// const toggleDark = useToggle(isDark)
+
+// function toggle() {
+//   toggleDark()
+//   designStore.setDarkMode(isDark.value ? 'dark' : 'light')
+// }
+
+// const menuItems = [
+//   { title: '🐗 keep-alive', route: '/editNickname' },
+//   { title: '🦘 404 页演示', route: '/404' },
+// ]
 </script>
 
 <style scoped lang="scss">
-.content {
-  height: 45%;
-  overflow-y: scroll;
+.main {
+  display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-content: stretch;
+  .head {
+    height: 40px;
+    order: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
 
-  .item {
-    padding: 12px 0;
-
-    &:nth-child(even) {
-      background-color: #ebf6f9;
-    }
+  .content {
+    height: 200px;
+    order: 0;
   }
 }
 </style>
