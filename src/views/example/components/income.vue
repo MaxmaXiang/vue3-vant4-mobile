@@ -1,11 +1,11 @@
 <template>
     <div class="container">
         <van-cell-group>
-            <van-cell title="收入" :border="false" style="height: 35px;" center />
+            <van-cell title="收入" :border="false" class="custom-cell" center />
             <van-pull-refresh v-model="isLoadingPull" @refresh="onRefresh">
                 <van-list class="scroll-list" v-model:loading="loading" :finished="finished" finished-text="没有更多了"
                 @load="onLoad">
-                <van-row v-for="item in list" :key="item" type="flex">
+                <van-row v-for="item in list" :key="item" type="flex" class="light-green-background">
                     <van-col class="col" span="5">哈哈</van-col>
                 </van-row>
             </van-list>
@@ -28,6 +28,7 @@
 
 <script setup lang="ts">
 import { number } from 'echarts';
+
 
 let isLoadingPull = ref(true);
 function onRefresh() {
@@ -83,5 +84,15 @@ const onLoad = () => {
     position: relative;
     padding-top: 5px;
     /* 表头的高度 */
+}
+
+.custom-cell {
+  background-color: #846994; /* 紫色背景 */
+  color: white; /* 白色文字 */
+  height:35px
+}
+
+.light-green-background {
+  background-color: #C4ECCA; /* 浅绿色背景 */
 }
 </style>

@@ -17,12 +17,30 @@
 
   <div class="main">
     <van-row class="head">
-      <van-col span="5"><van-button plain hairline type="default" size="small" @click="changeToIncome()">收入状况</van-button></van-col>
-      <van-col span="5"><van-button plain hairline type="default" size="small" @click="changeTopropertyShow()">资产负债表</van-button></van-col>
-      <van-col span="5" offset="9"><van-image position="center" width="4rem" height="4rem" :src="plus" /></van-col>
+      <van-col span="5"><van-button plain hairline type="default" size="small"
+          @click="changeToIncome()">收入状况</van-button></van-col>
+      <van-col span="5"><van-button plain hairline type="default" size="small"
+          @click="changeTopropertyShow()">资产负债表</van-button></van-col>
+      <van-col span="5" offset="9"><van-image position="center" width="4rem" height="4rem" :src="plus"
+          @click="openPopupShow()" /></van-col>
     </van-row>
-    <income class="content" v-show="incomeShow"/>
-    <property class="content" v-show="propertyShow"/>
+    <income class="content" v-show="incomeShow" />
+    <property class="content" v-show="propertyShow" />
+    <van-popup v-model:show="popupShow" position="bottom" :style="{ height: '30%' }" @click-overlay="closePopupShow()">
+      <div class="transportSwitch">
+        <div :class="task === '1' ? 'choose' : ''" @click="onChoose('1')">
+          全部
+        </div>
+        <div :class="task === '2' ? 'choose' : ''" @click="onChoose('2')">
+          客运
+        </div>
+        <div :class="task === '3' ? 'choose' : ''" @click="onChoose('3')">
+          货包
+        </div>
+      </div>
+
+    </van-popup>
+
   </div>
 </template>
 
@@ -35,16 +53,32 @@ import property from '@/views/example/components/property.vue'
 
 import plus from '@/assets/icons/plus.svg'
 
-let incomeShow=ref(true)
-let propertyShow=ref(false)
+let incomeShow = ref(true)
+let propertyShow = ref(false)
+let popupShow = ref(false)
 
-function changeTopropertyShow(){
-  propertyShow.value=true;
-  incomeShow.value=false;
+function changeTopropertyShow() {
+  propertyShow.value = true;
+  incomeShow.value = false;
 }
-function changeToIncome(){
-  propertyShow.value=false;
-  incomeShow.value=true;
+function changeToIncome() {
+  propertyShow.value = false;
+  incomeShow.value = true;
+}
+
+function closePopupShow() {
+  popupShow.value = false
+}
+
+function openPopupShow() {
+  popupShow.value = true
+}
+
+
+let task=ref("1")
+
+function onChoose(value){
+
 }
 // const loading = ref(true);
 // onMounted(() => {
@@ -77,20 +111,46 @@ function changeToIncome(){
 <style scoped lang="scss">
 .main {
   display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: stretch;
-    align-content: stretch;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+
   .head {
     height: 40px;
     order: 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   .content {
     height: 200px;
     order: 0;
+  }
+}
+
+.transportSwitch {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 0.97rem;
+
+  div {
+    height: 1.89rem;
+    line-height: 1.89rem;
+    width: 2.37rem;
+    color: #0097e0;
+    text-align: center;
+    border-radius: 0.97rem;
+    font-weight: 500;
+    font-size: 0.86rem;
+    padding: 0 0.2rem;
+  }
+
+  .choose {
+    border-radius: 0.97rem;
+    background: #0097e0;
+    color: #ffffff;
   }
 }
 </style>
