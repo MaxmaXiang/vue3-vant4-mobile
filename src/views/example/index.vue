@@ -27,18 +27,27 @@
     <income class="content" v-show="incomeShow" />
     <property class="content" v-show="propertyShow" />
     <van-popup v-model:show="popupShow" position="bottom" :style="{ height: '30%' }" @click-overlay="closePopupShow()">
-      <div class="transportSwitch">
-        <div :class="task === '1' ? 'choose' : ''" @click="onChoose('1')">
-          全部
-        </div>
-        <div :class="task === '2' ? 'choose' : ''" @click="onChoose('2')">
-          客运
-        </div>
-        <div :class="task === '3' ? 'choose' : ''" @click="onChoose('3')">
-          货包
-        </div>
-      </div>
 
+      <van-row>
+        <van-col span="20">
+          <van-radio-group v-model="checked1" direction="horizontal">
+            <van-radio name="1" shape="square" v-if="incomeShow">收入</van-radio>
+            <van-radio name="2" shape="square" v-if="incomeShow">支出</van-radio>
+
+            <van-radio name="1" shape="square" v-if="propertyShow">资产</van-radio>
+            <van-radio name="2" shape="square" v-if="propertyShow">负债</van-radio>
+          </van-radio-group>
+          <van-radio-group v-model="checked2" direction="horizontal">
+            <van-radio name="1" shape="square">具体项</van-radio>
+            <van-radio name="2" shape="square">分类</van-radio>
+          </van-radio-group>
+        </van-col>
+        <van-col span="4"><img :src="plane" @click="addItem()"/></van-col>
+      </van-row>
+
+
+      <van-field v-model="itemName" label="名称" placeholder="请输入名称" />
+      <van-field v-model="itemValue" label="值" placeholder="请输入值" />
     </van-popup>
 
   </div>
@@ -48,6 +57,7 @@
 import { useDark, useToggle } from '@vueuse/core'
 import { useDesignSettingStore } from '@/store/modules/designSetting'
 import { showDialog } from 'vant';
+import plane from '@/assets/icons/plane.svg';
 import income from '@/views/example/components/income.vue'
 import property from '@/views/example/components/property.vue'
 
@@ -75,11 +85,20 @@ function openPopupShow() {
 }
 
 
-let task=ref("1")
+let task = ref("1")
 
-function onChoose(value){
+function onChoose(value) {
 
 }
+
+function addItem() {
+  popupShow.value = false
+}
+
+const checked1 = ref("1")
+const checked2 = ref("1")
+const itemName = ref()
+const itemValue = ref()
 // const loading = ref(true);
 // onMounted(() => {
 //   loading.value = false;
@@ -153,5 +172,11 @@ function onChoose(value){
     background: #0097e0;
     color: #ffffff;
   }
+}
+
+.icon-plane {
+  font-size: 36px;
+  /* 设置图标大小 */
+  color: #007BFF;
 }
 </style>
