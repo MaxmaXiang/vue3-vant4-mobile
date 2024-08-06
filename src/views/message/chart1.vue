@@ -24,6 +24,12 @@ const chartOptions: EChartsOption = {
     data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月']  // 类目数据
   },
   yAxis: {
+    
+    axisLabel: {
+      margin: 1,
+      // rotate: 30 ,
+      showMaxLabel: true // 确保显示最大值
+    },
     type: 'value'  // y坐标轴类型
   },
   series: [{
