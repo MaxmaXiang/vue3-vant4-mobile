@@ -57,7 +57,7 @@ const routeModuleList: Array<RouteRecordRaw> = [
     redirect: '/example/index',
     component: Layout,
     meta: {
-      title: '示例',
+      title: '鼠鼠快跑',
       iconNormal: date_black,
       iconActive: date_blue,
     },
@@ -150,6 +150,15 @@ const routeModuleList: Array<RouteRecordRaw> = [
       innerPage: true,
     },
     component: () => import('@/views/my/ThemeSetting.vue'),
+  },
+  {
+    path: '/dateAndTime',
+    name: 'DateAndTime',
+    meta: {
+      title: '日期与时间',
+      innerPage: true,
+    },
+    component: () => import('@/views/my/DateAndTime.vue'),
   },
 ]
 

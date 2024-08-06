@@ -38,7 +38,7 @@
         </template>
       </van-cell>
 
-      <van-cell :border="false" title="隐私政策" is-link>
+      <van-cell :border="false" title="日期与时间" is-link to="/dateAndTime">
         <template #icon>
           <i class="i-material-symbols:list-alt-rounded mr-2 text-xl" />
         </template>

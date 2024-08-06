@@ -138,6 +138,7 @@ function onChoose(value){
   div {
     height: 1.89rem;
     line-height: 1.89rem;
+    
     width: 2.37rem;
     color: #0097e0;
     text-align: center;
