@@ -1,9 +1,10 @@
 import { http } from '@/utils/http/axios'
-
+import {getAppEnvConfig} from '@/utils/env'
+const url=getAppEnvConfig().VITE_GLOB_API_URL+"/admin"
 export interface BasicResponseModel<T = any> {
   code: number
   message: string
-  result: T
+  data: T
 }
 
 /**
@@ -12,7 +13,7 @@ export interface BasicResponseModel<T = any> {
 export function login(params: any) {
   return http.request<BasicResponseModel>(
     {
-      url: '/login',
+      url: url+'/login',
       method: 'POST',
       params,
     },
@@ -27,7 +28,7 @@ export function login(params: any) {
  */
 export function getUserInfo() {
   return http.request({
-    url: '/getUserInfo',
+    url: url+'/info',
     method: 'get',
   })
 }
@@ -37,7 +38,7 @@ export function getUserInfo() {
  */
 export function doLogout() {
   return http.request({
-    url: '/logout',
+    url: url+'/logout',
     method: 'POST',
   })
 }
