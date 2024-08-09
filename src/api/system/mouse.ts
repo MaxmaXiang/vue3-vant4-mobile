@@ -71,3 +71,20 @@ export function query(params: any) {
       },
     )
   }
+
+
+  /**
+ * @description: 查询图表
+ */
+export function queryEcharts(params: any) {
+  return http.request<BasicResponseModel>(
+    {
+      url: url+'/queryEcharts',
+      method: 'POST',
+      params,
+    },
+    {
+      isTransformResponse: false,
+    },
+  )
+}
