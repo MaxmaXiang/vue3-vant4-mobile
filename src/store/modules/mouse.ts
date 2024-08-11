@@ -37,7 +37,6 @@ export interface ItemList {
 export const useMouseStore = defineStore({
   id: 'app-mouse',
   state: () => ({
-    currentDate: ref(['2021', '01']),
     currentItem: ref([])
   }),
   getters: {
