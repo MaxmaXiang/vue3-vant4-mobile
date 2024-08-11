@@ -76,7 +76,7 @@ import { animates as animateOptions } from '@/settings/animateSetting'
 const designStore = useDesignSettingStore()
 
 const isDark = useDark({
-  valueDark: 'dark',
+  valueDark: 'light',
   valueLight: 'light',
 })
 
@@ -86,7 +86,7 @@ const getDarkMode = computed({
   get: () => isDark.value,
   set: () => {
     toggleDark()
-    designStore.setDarkMode(isDark.value ? 'dark' : 'light')
+    designStore.setDarkMode(isDark.value ? 'light' : 'light')
   },
 })
 

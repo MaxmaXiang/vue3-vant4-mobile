@@ -13,7 +13,7 @@ import echarts from '@/utils/lib/echarts'
 
 export function useECharts(
   elRef: Ref<HTMLDivElement>,
-  theme: 'light' | 'dark' | 'default' = 'default',
+  theme: 'light' | 'light' | 'default' = 'default',
 ) {
   const designStore = useDesignSettingStore()
 
@@ -28,7 +28,7 @@ export function useECharts(
   resizeFn = useDebounceFn(resize, 200)
 
   const getOptions = computed((): EChartsOption => {
-    if (getDarkMode.value !== 'dark') {
+    if (getDarkMode.value !== 'light') {
       return cacheOptions.value
     }
     return {

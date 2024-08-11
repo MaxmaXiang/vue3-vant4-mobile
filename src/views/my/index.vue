@@ -51,14 +51,14 @@
       </van-cell>
 
 
-      <van-cell center title="🌓 暗黑模式">
+      <!-- <van-cell center title="🌓 暗黑模式">
         <template #right-icon>
           <i inline-block align-middle i="dark:carbon-moon carbon-sun" />
-          <span class="ml-2">{{ isDark ? 'Dark' : 'Light' }}</span>
+          <span class="ml-2">{{ isDark ? 'light' : 'Light' }}</span>
           <span class="mx-2">{{ isDark }}</span>
           <van-switch v-model="checked" size="22" @click="toggle()" />
         </template>
-      </van-cell>
+      </van-cell> -->
 
       <van-action-sheet
         v-model:show="showLogoutAction"
@@ -80,7 +80,7 @@ import { useDesignSettingStore } from '@/store/modules/designSetting'
 
 const designStore = useDesignSettingStore()
 const isDark = useDark({
-  valueDark: 'dark',
+  valueDark: 'light',
   valueLight: 'light',
 })
 
@@ -90,7 +90,7 @@ const toggleDark = useToggle(isDark)
 
 function toggle() {
   toggleDark()
-  designStore.setDarkMode(isDark.value ? 'dark' : 'light')
+  designStore.setDarkMode(isDark.value ? 'light' : 'light')
 }
 
 

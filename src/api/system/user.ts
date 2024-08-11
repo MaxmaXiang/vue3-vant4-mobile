@@ -26,7 +26,7 @@ export function login(params: any) {
 /**
  * @description: 获取用户信息
  */
-export function getUserInfo() {
+export function getUserInfo(params: any) {
   return http.request({
     url: url+'/info',
     method: 'get',

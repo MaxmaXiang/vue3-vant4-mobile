@@ -10,16 +10,11 @@ import router from '@/router'
 const Storage = createStorage({ storage: localStorage })
 
 interface UserInfo {
-  userId: string | number
+  id: number
   username: string
-  realname: string
-  nickname: string
-  avatar: string
-  cover: string
-  gender: number
-  phone: string
-  sign?: string
-  industry?: number
+  icon: string
+  roles:[]
+  menus:[]
 }
 
 interface IUserState {
@@ -35,7 +30,7 @@ interface LoginParams {
 
 export const useUserStore = defineStore({
   id: 'app-user',
-  state: (): IUserState => ({
+  state: () => ({
     userInfo: null,
     token: undefined,
     lastUpdateTime: 0,
@@ -52,11 +47,11 @@ export const useUserStore = defineStore({
     },
   },
   actions: {
-    setToken(token: string | undefined) {
+    setToken(token) {
       this.token = token || ''
       Storage.set(ACCESS_TOKEN, token)
     },
-    setUserInfo(info: UserInfo | null) {
+    setUserInfo(info) {
       this.userInfo = info
       this.lastUpdateTime = new Date().getTime()
       Storage.set(CURRENT_USER, info)
@@ -69,6 +64,7 @@ export const useUserStore = defineStore({
         if (code === ResultEnum.SUCCESS) {
           // save token
           this.setToken(data.token)
+          Storage.set("username",params.username)
         }
         return Promise.resolve(response)
       }
@@ -77,17 +73,19 @@ export const useUserStore = defineStore({
       }
     },
 
-    async GetUserInfo() {
-      return new Promise((resolve, reject) => {
-        getUserInfo()
-          .then((res) => {
-            this.setUserInfo(res)
-            resolve(res)
-          })
-          .catch((error) => {
-            reject(error)
-          })
-      })
+    async GetUserInfo(params: any) {
+      try {
+        const response = await getUserInfo(params)
+        const { data, code } = response
+        if (code === ResultEnum.SUCCESS) {
+          Storage.set("userId",data.id)
+          this.setUserInfo(data)
+        }
+        return Promise.resolve(response)
+      }
+      catch (error) {
+        return Promise.reject(error)
+      }
     },
 
     async Logout() {

@@ -4,32 +4,37 @@
             <van-cell title="收入" :border="false" class="custom-cell" center />
             <van-pull-refresh v-model="isLoadingPull" @refresh="onRefresh">
                 <van-list class="scroll-list" v-model:loading="loading" :finished="finished" finished-text="没有更多了"
-                @load="onLoad">
-                <van-row v-for="item in list" :key="item" type="flex" class="light-green-background">
-                    <van-col class="col" span="5">哈哈</van-col>
-                </van-row>
-            </van-list>
-        </van-pull-refresh>
-        <van-cell title="总收入" :border="false" style="height: 35px;" center />
-        <van-cell title="支出" :border="false" style="height: 35px;" center />
-        <van-pull-refresh v-model="isLoadingPull" @refresh="onRefresh">
-            <van-list class="scroll-list" v-model:loading="loading" :finished="finished" finished-text="没有更多了"
-            @load="onLoad">
-            <van-row v-for="item in list" :key="item" type="flex">
-                <van-col class="col" span="5">哈哈</van-col>
-            </van-row>
-        </van-list>
-    </van-pull-refresh>
-    <van-cell title="总支出" :border="false" style="height: 35px;" center />
-    <van-cell title="每月净现金流" :border="false" style="height: 35px;" center />
+                    @load="onLoad">
+                    <van-row v-for="item in currentItemIncome" :key="item.id" type="flex"
+                        class="light-green-background">
+                        <van-col class="col" span="5">{{ item.userName }}</van-col>
+                    </van-row>
+                </van-list>
+            </van-pull-refresh>
+            <van-cell title="总收入" :border="false" style="height: 35px;" center />
+            <van-cell title="支出" :border="false" style="height: 35px;" center />
+            <van-pull-refresh v-model="isLoadingPull" @refresh="onRefresh">
+                <van-list class="scroll-list" v-model:loading="loading" :finished="finished" finished-text="没有更多了"
+                    @load="onLoad">
+                    <van-row v-for="item in list" :key="item" type="flex">
+                        <van-col class="col" span="5">哈哈</van-col>
+                    </van-row>
+                </van-list>
+            </van-pull-refresh>
+            <van-cell title="总支出" :border="false" style="height: 35px;" center />
+            <van-cell title="每月净现金流" :border="false" style="height: 35px;" center />
         </van-cell-group>
     </div>
 </template>
 
 <script setup lang="ts">
 import { number } from 'echarts';
+import { useMouseStore ,Item} from '@/store/modules/mouse'
 
+const mouseStore = useMouseStore();
 
+// console.log(incomeItem)
+defineProps<{ currentItemIncome: Item[] }>(); // 定义期望接收的 props 类型
 let isLoadingPull = ref(true);
 function onRefresh() {
 
@@ -87,12 +92,15 @@ const onLoad = () => {
 }
 
 .custom-cell {
-  background-color: #846994; /* 紫色背景 */
-  color: white; /* 白色文字 */
-  height:35px
+    background-color: #846994;
+    /* 紫色背景 */
+    color: white;
+    /* 白色文字 */
+    height: 35px
 }
 
 .light-green-background {
-  background-color: #C4ECCA; /* 浅绿色背景 */
+    background-color: #C4ECCA;
+    /* 浅绿色背景 */
 }
 </style>

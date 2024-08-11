@@ -7,7 +7,9 @@ import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { storage } from '@/utils/Storage'
 import { PageEnum } from '@/enums/pageEnum'
 import 'nprogress/nprogress.css'
+import { createStorage } from '@/utils/Storage'
 
+const Storage = createStorage({ storage: localStorage })
 NProgress.configure({ parent: '#app' })
 
 const LOGIN_PATH = PageEnum.BASE_LOGIN
@@ -43,7 +45,10 @@ export function createRouterGuards(router: Router) {
     // 当上次更新时间为空时获取用户信息
     if (userStore.getLastUpdateTime === 0) {
       try {
-        await userStore.GetUserInfo()
+        const username={
+          username:Storage.get("username")
+        }
+        await userStore.GetUserInfo(username)
       }
       catch (err) {
         next()

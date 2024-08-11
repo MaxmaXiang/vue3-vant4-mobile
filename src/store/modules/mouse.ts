@@ -3,72 +3,56 @@ import { createStorage } from '@/utils/Storage'
 import { store } from '@/store'
 import { ACCESS_TOKEN, CURRENT_USER } from '@/store/mutation-types'
 import { ResultEnum } from '@/enums/httpEnum'
-import { insert, update, deleteItem,query,queryEcharts } from '@/api/system/mouse'
+import { insert, update, deleteItem, query, queryEcharts } from '@/api/system/mouse'
 import { PageEnum } from '@/enums/pageEnum'
 import router from '@/router'
 
 const Storage = createStorage({ storage: localStorage })
 
-// interface UserInfo {
-//   userId: string | number
-//   username: string
-//   realname: string
-//   nickname: string
-//   avatar: string
-//   cover: string
-//   gender: number
-//   phone: string
-//   sign?: string
-//   industry?: number
-// }
+export  interface Item {
+  "id": number,
+  "userName": Nullable<string>,
+  "parentId": Nullable<number>,
+  "type": Nullable<number>,
+  "itemType": Nullable<number>,
+  "name": Nullable<string>,
+  "value": Nullable<string>,
+  "date": Nullable<string>,
+  "createBy": Nullable<string>,
+  "createTime": Nullable<string>,
+  "updateBy": Nullable<string>,
+  "updateTime": Nullable<string>,
+  "ifDelete": number,
+  "children": Nullable<[Item]>
+}
 
-// interface IUserState {
-//   token?: string
-//   userInfo: Nullable<UserInfo>
-//   lastUpdateTime: number
-// }
+export interface ItemList {
+  itemTypeStr:Nullable<string>,
+  itemType:Nullable<number>,
+  itemList:Nullable<[Item]>
+}
 
-// interface LoginParams {
-//   username: string
-//   password: string
-// }
 
-export const useUserStore = defineStore({
-  id: 'app-user',
+
+export const useMouseStore = defineStore({
+  id: 'app-mouse',
   state: () => ({
-    userInfo: null,
-    token: undefined,
-    lastUpdateTime: 0,
+    currentDate: ref(['2021', '01']),
+    currentItem: ref([])
   }),
   getters: {
-    getUserInfo(): UserInfo {
-      return this.userInfo || Storage.get(CURRENT_USER, '') || {}
-    },
-    getToken(): string {
-      return this.token || Storage.get(ACCESS_TOKEN, '')
-    },
-    getLastUpdateTime(): number {
-      return this.lastUpdateTime
+    getCurrentItem(): any {
+      return this.currentItem
     },
   },
   actions: {
-    setToken(token: string | undefined) {
-      this.token = token || ''
-      Storage.set(ACCESS_TOKEN, token)
-    },
-    setUserInfo(info: UserInfo | null) {
-      this.userInfo = info
-      this.lastUpdateTime = new Date().getTime()
-      Storage.set(CURRENT_USER, info)
-    },
-
-    async Login(params: LoginParams) {
+    async insert(item) {
       try {
-        const response = await login(params)
+
+        const response = await insert(item)
         const { data, code } = response
         if (code === ResultEnum.SUCCESS) {
-          // save token
-          this.setToken(data.token)
+
         }
         return Promise.resolve(response)
       }
@@ -76,40 +60,67 @@ export const useUserStore = defineStore({
         return Promise.reject(error)
       }
     },
+    async update(item) {
+      try {
 
-    async GetUserInfo() {
-      return new Promise((resolve, reject) => {
-        getUserInfo()
-          .then((res) => {
-            this.setUserInfo(res)
-            resolve(res)
-          })
-          .catch((error) => {
-            reject(error)
-          })
-      })
-    },
+        const response = await update(item)
+        const { data, code } = response
+        if (code === ResultEnum.SUCCESS) {
 
-    async Logout() {
-      if (this.getToken) {
-        try {
-          await doLogout()
         }
-        catch {
-          console.error('注销Token失败')
-        }
+        return Promise.resolve(response)
       }
-      this.setToken(undefined)
-      this.setUserInfo(null)
-      Storage.remove(ACCESS_TOKEN)
-      Storage.remove(CURRENT_USER)
-      router.push(PageEnum.BASE_LOGIN)
-      location.reload()
+      catch (error) {
+        return Promise.reject(error)
+      }
+    },
+    async deleteItem(item) {
+      try {
+
+        const response = await deleteItem(item)
+        const { data, code } = response
+        if (code === ResultEnum.SUCCESS) {
+
+        }
+        return Promise.resolve(response)
+      }
+      catch (error) {
+        return Promise.reject(error)
+      }
+    },
+    async query(item) {
+      try {
+
+        const response = await query(item)
+        const { data, code } = response
+        if (code === ResultEnum.SUCCESS) {
+          this.currentItem = data
+        }
+        return Promise.resolve(response)
+      }
+      catch (error) {
+        return Promise.reject(error)
+      }
+    },
+    async queryEcharts(item) {
+      try {
+
+        const response = await queryEcharts(item)
+        const { data, code } = response
+        if (code === ResultEnum.SUCCESS) {
+
+        }
+        return Promise.resolve(response)
+      }
+      catch (error) {
+        return Promise.reject(error)
+      }
     },
   },
 })
 
 // Need to be used outside the setup
 export function useUserStoreWidthOut() {
-  return useUserStore(store)
+  return useMouseStore(store)
+
 }
