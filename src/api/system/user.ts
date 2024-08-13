@@ -44,6 +44,16 @@ export function doLogout() {
 }
 
 /**
+ * @description: 刷新token
+ */
+export function refreshTokenPort() {
+  return http.request({
+    url: url+'/refreshToken',
+    method: 'get',
+  })
+}
+
+/**
  * @description: 用户修改密码
  */
 export function changePassword(params: any, uid: any) {
@@ -58,3 +68,5 @@ export function changePassword(params: any, uid: any) {
     },
   )
 }
+
+

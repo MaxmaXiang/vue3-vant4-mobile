@@ -3,7 +3,7 @@ import { createStorage } from '@/utils/Storage'
 import { store } from '@/store'
 import { ACCESS_TOKEN, CURRENT_USER } from '@/store/mutation-types'
 import { ResultEnum } from '@/enums/httpEnum'
-import { doLogout, getUserInfo, login } from '@/api/system/user'
+import { doLogout, getUserInfo, login, refreshTokenPort } from '@/api/system/user'
 import { PageEnum } from '@/enums/pageEnum'
 import router from '@/router'
 
@@ -62,9 +62,26 @@ export const useUserStore = defineStore({
         const response = await login(params)
         const { data, code } = response
         if (code === ResultEnum.SUCCESS) {
-          // save token
           this.setToken(data.token)
+          // save token
           Storage.set("username",params.username)
+        }
+        return Promise.resolve(response)
+      }
+      catch (error) {
+        return Promise.reject(error)
+      }
+    },
+    
+
+    async refreshToken() {
+      try {
+        console.log("@@@@@@@@@@@@@@")
+        const response = await refreshTokenPort()
+        console.log("@@@"+response)
+        const { data, code } = response
+        if (code === ResultEnum.SUCCESS) {
+          this.setToken(data.token)
         }
         return Promise.resolve(response)
       }

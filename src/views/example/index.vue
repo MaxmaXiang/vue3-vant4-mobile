@@ -20,26 +20,44 @@
         <van-pull-refresh v-model="isLoadingPull" @refresh="onRefresh">
           <van-list class="scroll-list" v-model:loading="loading" :finished="finished" finished-text="没有更多了"
             @load="onLoad">
-            <van-row v-for="item in currentItem1" :key="item.id" type="flex" justify="space-between"
-              class="light-green-background">
-              <van-col class="name-col"><span>{{ item.name }}：</span></van-col>
-              <van-col class="value-col"><span>￥{{ item.value }}</span></van-col>
-            </van-row>
+            <div v-for="item in currentItem1" :key="item.id">
+              <!-- 父项item -->
+              <van-row type="flex" justify="space-between" class="light-green-background">
+                <van-col class="name-col"><span>{{ item.name }}<span v-if="item.type == 2">:</span></span></van-col>
+                <van-col v-if="item.value" class="value-col"><span>￥{{ item.value }}</span></van-col>
+              </van-row>
+              <!-- 子项children，使用v-for嵌套在父项下方 -->
+              <div v-if="item.children" class="children-indent light-green-background">
+                <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between">
+                  <van-col class="name-col"><span>{{ child.name }}<span v-if="child.type == 2">:</span></span></van-col>
+                  <van-col v-if="child.value" class="value-col"><span>￥{{ child.value }}</span></van-col>
+                </van-row>
+              </div>
+            </div>
           </van-list>
         </van-pull-refresh>
-        <van-cell title="总收入" :border="false" style="height: 35px;" center />
-        <van-cell title="支出" :border="false" style="height: 35px;" center />
+        <van-cell title="总收入" :border="false" style="height: 35px;" center class="small-green-background">{{currentItemIncomeTotal}}</van-cell>
+        <van-cell title="支出" :border="false" style="height: 35px;" center class="custom-cell"/>
         <van-pull-refresh v-model="isLoadingPull" @refresh="onRefresh">
           <van-list class="scroll-list" v-model:loading="loading" :finished="finished" finished-text="没有更多了"
             @load="onLoad">
-            <van-row v-for="item in currentItem2" :key="item.id" type="flex" justify="space-between"
-              class="light-green-background">
-              <van-col class="name-col"><span>{{ item.name }}：</span></van-col>
-              <van-col class="value-col"><span>￥{{ item.value }}</span></van-col>
-            </van-row>
+            <div v-for="item in currentItem2" :key="item.id">
+              <!-- 父项item -->
+              <van-row type="flex" justify="space-between" class="light-green-background">
+                <van-col class="name-col"><span>{{ item.name }}<span v-if="item.type == 2">:</span></span></van-col>
+                <van-col v-if="item.value" class="value-col"><span>￥{{ item.value }}</span></van-col>
+              </van-row>
+              <!-- 子项children，使用v-for嵌套在父项下方 -->
+              <div v-if="item.children" class="children-indent light-green-background">
+                <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between">
+                  <van-col class="name-col"><span>{{ child.name }}<span v-if="child.type == 2">:</span></span></van-col>
+                  <van-col v-if="child.value" class="value-col"><span>￥{{ child.value }}</span></van-col>
+                </van-row>
+              </div>
+            </div>
           </van-list>
         </van-pull-refresh>
-        <van-cell title="总支出" :border="false" style="height: 35px;" center />
+        <van-cell title="总支出" :border="false" style="height: 35px;" center  class="small-green-background"/>
         <van-cell title="每月净现金流" :border="false" style="height: 35px;" center />
       </van-cell-group>
     </div>
@@ -51,26 +69,44 @@
         <van-pull-refresh v-model="isLoadingPull" @refresh="onRefresh">
           <van-list class="scroll-list" v-model:loading="loading" :finished="finished" finished-text="没有更多了"
             @load="onLoad">
-            <van-row v-for="item in currentItem3" :key="item.id" type="flex" justify="space-between"
-              class="light-green-background">
-              <van-col class="name-col"><span>{{ item.name }}：</span></van-col>
-              <van-col class="value-col"><span>￥{{ item.value }}</span></van-col>
-            </van-row>
+            <div v-for="item in currentItem3" :key="item.id">
+              <!-- 父项item -->
+              <van-row type="flex" justify="space-between" class="light-green-background">
+                <van-col class="name-col"><span>{{ item.name }}<span v-if="item.type == 2">:</span></span></van-col>
+                <van-col v-if="item.value" class="value-col"><span>￥{{ item.value }}</span></van-col>
+              </van-row>
+              <!-- 子项children，使用v-for嵌套在父项下方 -->
+              <div v-if="item.children" class="children-indent light-green-background">
+                <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between">
+                  <van-col class="name-col"><span>{{ child.name }}<span v-if="child.type == 2">:</span></span></van-col>
+                  <van-col v-if="child.value" class="value-col"><span>￥{{ child.value }}</span></van-col>
+                </van-row>
+              </div>
+            </div>
           </van-list>
         </van-pull-refresh>
-        <van-cell title="总资产" :border="false" style="height: 35px;" center />
-        <van-cell title="负债" :border="false" style="height: 35px;" center />
+        <van-cell title="总资产" :border="false" style="height: 35px;" center  class="small-green-background">{{ currentItemIncomeTotal }}</van-cell>
+        <van-cell title="负债" :border="false" style="height: 35px;" center class="custom-cell"/>
         <van-pull-refresh v-model="isLoadingPull" @refresh="onRefresh">
           <van-list class="scroll-list" v-model:loading="loading" :finished="finished" finished-text="没有更多了"
             @load="onLoad">
-            <van-row v-for="item in currentItem4" :key="item.id" type="flex" justify="space-between"
-              class="light-green-background">
-              <van-col class="name-col"><span>{{ item.name }}：</span></van-col>
-              <van-col class="value-col"><span>￥{{ item.value }}</span></van-col>
-            </van-row>
+            <div v-for="item in currentItem4" :key="item.id">
+              <!-- 父项item -->
+              <van-row type="flex" justify="space-between" class="light-green-background">
+                <van-col class="name-col"><span>{{ item.name }}<span v-if="item.type == 2">:</span></span></van-col>
+                <van-col v-if="item.value" class="value-col"><span>￥{{ item.value }}</span></van-col>
+              </van-row>
+              <!-- 子项children，使用v-for嵌套在父项下方 -->
+              <div v-if="item.children" class="children-indent light-green-background">
+                <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between">
+                  <van-col class="name-col"><span>{{ child.name }}<span v-if="child.type == 2">:</span></span></van-col>
+                  <van-col v-if="child.value" class="value-col"><span>￥{{ child.value }}</span></van-col>
+                </van-row>
+              </div>
+            </div>
           </van-list>
         </van-pull-refresh>
-        <van-cell title="总负债" :border="false" style="height: 35px;" center />
+        <van-cell title="总负债" :border="false" style="height: 35px;" center  class="small-green-background"/>
       </van-cell-group>
     </div>
     <!-- 新增修改弹窗 -->
@@ -112,7 +148,8 @@
     <!-- 父id选择弹窗 -->
     <van-popup v-model:show="treeSelectTabShow" position="bottom" :style="{ height: '30%' }"
       @click-overlay="closeTreeSelectTabShow()">
-      <van-picker title="选择父id" :columns="currentItem1" @confirm="onConfirm" @cancel="onCancel" @change="onChange" :columns-field-names="customFieldName"/>
+      <van-picker title="选择父id" :columns="currentItem0Type1" @confirm="onConfirm" @cancel="onCancel" @change="onChange"
+        :columns-field-names="customFieldName" />
     </van-popup>
 
   </div>
@@ -120,6 +157,7 @@
 
 <script setup lang="ts">
 import { useMouseStore, ItemList, Item } from '@/store/modules/mouse'
+import { useUserStore } from '@/store/modules/user'
 import { useDark, useToggle } from '@vueuse/core'
 import { useDesignSettingStore } from '@/store/modules/designSetting'
 import { showDialog, showToast } from 'vant';
@@ -128,12 +166,17 @@ import income from '@/views/example/components/income.vue'
 import property from '@/views/example/components/property.vue'
 import { createStorage } from '@/utils/Storage'
 import plus from '@/assets/icons/plus.svg'
-
-
+import { onMounted } from 'vue'
+import router from '@/router'
+import { PageEnum } from '@/enums/pageEnum'
 const Storage = createStorage({ storage: localStorage })
 // 使用 useUserStore 获取 store 实例
 const mouseStore = useMouseStore();
+const userStore = useUserStore();
 
+onMounted(() => {
+
+})
 //收入tab页是否展示
 let incomeShow = ref(true)
 //资产tab页是否展示
@@ -153,6 +196,8 @@ var month = (time.getMonth() + 1).toString().padStart(2, '0'); // 月
 const loading = ref(false);
 const finished = ref(false);
 let isLoadingPull = ref(true);
+let parentId = ref<number>(-1);
+let currentItemIncomeTotal=ref<number>(0)
 function onRefresh() {
   queryItem()
   isLoadingPull.value = false
@@ -172,24 +217,17 @@ interface column {
   value: string
 }
 //父id选择弹窗
-const columns = [
-  { text: '杭州', value: 'Hangzhou' },
-  { text: '宁波', value: 'Ningbo' },
-  { text: '温州', value: 'Wenzhou' },
-  { text: '绍兴', value: 'Shaoxing' },
-  { text: '湖州', value: 'Huzhou' },
-];
 const onConfirm = ({ selectedValues }) => {
-  showToast(`当前值: ${selectedValues.join(',')}`);
+  parentId.value = selectedValues[0]
+  treeSelectTabShow.value = false
 };
 const onChange = ({ selectedValues }) => {
-  showToast(`当前值: ${selectedValues.join(',')}`);
 };
-const onCancel = () => showToast('取消');
+const onCancel = () => treeSelectTabShow.value = false;
 const customFieldName = {
-      text: 'name',
-      value: 'id',
-    };
+  text: 'name',
+  value: 'id',
+};
 
 
 function changeTopropertyShow() {
@@ -207,7 +245,21 @@ function closePopupShow() {
 
 function openPopupShow() {
   popupShow.value = true
+
 }
+
+onMounted(async () => {
+  // try {
+  //   // 刷新 token
+  //   console.log("这里是onMounted")
+  //   const responseToken = await userStore.refreshToken();
+  //   // 这里处理 responseToken
+  // } catch (error) {
+  //   // 处理 refreshToken 可能出现的错误
+  //   console.error('刷新 Token 失败:', error);
+  //   router.push(PageEnum.BASE_LOGIN)
+  // }
+});
 
 function closeTreeSelectTabShow() {
   treeSelectTabShow.value = false
@@ -221,7 +273,7 @@ async function addItem() {
     userName: Storage.get("username"),
     date: currentDate.value[0] + "-" + currentDate.value[1] + "-01",
     type: type.value,
-    parentId: -1,
+    parentId: parentId.value,
     itemType: itemType.value,
     value: itemValue.value,
     name: itemName.value,
@@ -230,6 +282,7 @@ async function addItem() {
   try {
     await mouseStore.insert(item); // 使用 await 等待异步操作完成
     showToast('新增成功！');
+    queryItem()
   } catch (error) {
     showToast('新增失败！');
     console.error('添加失败:', error);
@@ -245,6 +298,7 @@ function chooseDate() {
 
 function closeDateTabShow() {
   dateTabShow.value = false;
+  queryItem()
 }
 
 const type = ref("1")
@@ -254,17 +308,15 @@ const itemValue = ref()
 
 
 //获取收入支出资产负债数据
-let currentItem = ref<ItemList[]>([])
 let currentItem1 = ref<Item[]>([])
 let currentItem2 = ref<Item[]>([])
 let currentItem3 = ref<Item[]>([])
 let currentItem4 = ref<Item[]>([])
-let filterContinerItem1 = ref<Item[]>([])
-let filterContinerItem2 = ref<Item[]>([])
-let filterContinerItem3 = ref<Item[]>([])
-let filterContinerItem4 = ref<Item[]>([])
+let currentItem0Type1 = ref<Item[]>([])
+let currentItem1Type1 = ref<Item[]>([])
+let currentItem2Type1 = ref<Item[]>([])
+let currentItem3Type1 = ref<Item[]>([])
 async function queryItem() {
-  nextTick();
   let item = {
     userName: Storage.get("username"),
     date: currentDate.value[0] + "-" + currentDate.value[1] + "-01"
@@ -272,24 +324,18 @@ async function queryItem() {
   try {
 
     const response = await mouseStore.query(item); // 使用 await 等待异步操作完成
-    currentItem1 = response.data[0].itemList
-    currentItem2 = response.data[1].itemList
-    currentItem3 = response.data[2].itemList
-    currentItem4 = response.data[3].itemList
-    filterContinerItem1.value = (currentItem1.value || []).filter((item, index, array) => {
-      return item.type == 1||'1';
-    });
-    filterContinerItem2.value = (currentItem2.value || []).filter((item, index, array) => {
-      return item.type == 1;
-    });
-    filterContinerItem3.value = (currentItem3.value || []).filter((item, index, array) => {
-      return item.type == 1;
-    });
-    filterContinerItem4.value = (currentItem4.value || []).filter((item, index, array) => {
-      return item.type == 1;
-    });
+    currentItem1.value = response.data[0].itemList
+    currentItem2.value = response.data[1].itemList
+    currentItem3.value = response.data[2].itemList
+    currentItem4.value = response.data[3].itemList
+    currentItem0Type1.value = mouseStore.getCurrentItem0Type1
+    currentItem1Type1.value = mouseStore.getCurrentItem1Type1
+    currentItem2Type1.value = mouseStore.getCurrentItem2Type1
+    currentItem3Type1.value = mouseStore.getCurrentItem3Type1
+    currentItemIncomeTotal.value=mouseStore.getCurrentItemIncomeTotal
   } catch (error) {
     console.error('添加失败:', error);
+    router.push(PageEnum.BASE_LOGIN)
     // 这里可以添加错误处理逻辑
   }
 
@@ -398,6 +444,10 @@ const activeIndex = ref(0);
 
 .light-green-background {
   background-color: #C4ECCA;
+  /* 浅绿色背景 */
+}
+.small-green-background {
+  background-color: #D6EBDE;
   /* 浅绿色背景 */
 }
 </style>

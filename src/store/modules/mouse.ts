@@ -6,7 +6,7 @@ import { ResultEnum } from '@/enums/httpEnum'
 import { insert, update, deleteItem, query, queryEcharts } from '@/api/system/mouse'
 import { PageEnum } from '@/enums/pageEnum'
 import router from '@/router'
-
+import {sumItemValues} from '@/utils/sum'
 const Storage = createStorage({ storage: localStorage })
 
 export  interface Item {
@@ -37,11 +37,37 @@ export interface ItemList {
 export const useMouseStore = defineStore({
   id: 'app-mouse',
   state: () => ({
-    currentItem: ref([])
+    currentItem: ref<ItemList[]>([])
   }),
   getters: {
-    getCurrentItem(): any {
+    getCurrentItem(): ItemList[] {
       return this.currentItem
+    },
+    getCurrentItem0Type1(state): Item[] {
+      return (state.currentItem[0].itemList || []).filter((item, index, array) => {
+        return item.type == 1;
+      });
+    },
+    getCurrentItem1Type1(state): Item[] {
+      return (state.currentItem[1].itemList || []).filter((item, index, array) => {
+        return item.type == 1;
+      });
+    },
+    getCurrentItem2Type1(state): Item[] {
+      return (state.currentItem[2].itemList || []).filter((item, index, array) => {
+        return item.type == 1;
+      });
+    },
+    getCurrentItem3Type1(state): Item[] {
+      return (state.currentItem[3].itemList || []).filter((item, index, array) => {
+        return item.type == 1;
+      });
+    },
+    //总收入
+    getCurrentItemIncomeTotal(state): number {
+      let s=(state.currentItem[0].itemList || [])
+      let total=sumItemValues(s)
+      return total;
     },
   },
   actions: {

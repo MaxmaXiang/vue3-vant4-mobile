@@ -95,6 +95,7 @@ function handleSubmit() {
           password: formData.password,
         })
         if (code === ResultEnum.SUCCESS) {
+
           const toPath = decodeURIComponent((route.query?.redirect || '/') as string)
           showSuccessToast('登录成功，即将进入系统')
           if (route.name === PageEnum.BASE_LOGIN_NAME) {
