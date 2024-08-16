@@ -22,7 +22,7 @@
             @load="onLoad">
             <div v-for="item in currentItem1" :key="item.id">
               <!-- 父项item -->
-              <van-row type="flex" justify="space-between" class="light-green-background">
+              <van-row type="flex" justify="space-between" class="light-green-background" @click="updatePopupShow(item)">
                 <van-col class="name-col"><span>{{ item.name }}<span v-if="item.type == 2">:</span></span></van-col>
                 <van-col v-if="item.value" class="value-col"><span>￥{{ item.value }}</span></van-col>
               </van-row>
@@ -114,20 +114,20 @@
 
       <van-row>
         <van-col span="10">
-          <van-radio-group v-model="itemType" direction="horizontal">
-            <van-radio name="1" shape="square" v-if="incomeShow">收入</van-radio>
-            <van-radio name="2" shape="square" v-if="incomeShow">支出</van-radio>
+          <van-radio-group v-model.number="itemType" direction="horizontal" @change="onInertItemChange">
+            <van-radio name=1 value=1 shape="square" v-if="incomeShow">收入</van-radio>
+            <van-radio name=2 value=2 shape="square" v-if="incomeShow">支出</van-radio>
 
-            <van-radio name="3" shape="square" v-if="propertyShow">资产</van-radio>
-            <van-radio name="4" shape="square" v-if="propertyShow">负债</van-radio>
+            <van-radio name=3 value=3 shape="square" v-if="propertyShow">资产</van-radio>
+            <van-radio name=4 value=4 shape="square" v-if="propertyShow">负债</van-radio>
           </van-radio-group>
-          <van-radio-group v-model="type" direction="horizontal">
-            <van-radio name="1" shape="square">文件夹</van-radio>
-            <van-radio name="2" shape="square">文件</van-radio>
+          <van-radio-group v-model.number="type" direction="horizontal">
+            <van-radio name=1 value="1" shape="square">文件夹</van-radio>
+            <van-radio name=2 value="2" shape="square">文件</van-radio>
           </van-radio-group>
 
         </van-col>
-        <van-button span="4" @click="openTreeSelectTabShow" size="normal">选择父id</van-button>
+        <van-button span="4" @click="openTreeSelectTabShow" size="normal" v-if="type==2">选择父id</van-button>
         <van-col span="4" offset="4"><img :src="plane" @click="addItem()" /></van-col>
       </van-row>
 
@@ -193,8 +193,8 @@ var time = new Date(getTime); //创建一个日期对象
 var year = time.getFullYear(); // 年
 var month = (time.getMonth() + 1).toString().padStart(2, '0'); // 月
 //收入支出页
-const loading = ref(false);
-const finished = ref(false);
+let loading = ref(false);
+let finished = ref(false);
 let isLoadingPull = ref(true);
 let parentId = ref<number>(-1);
 let currentItemIncomeTotal=ref<number>(0)
@@ -244,8 +244,24 @@ function closePopupShow() {
 }
 
 function openPopupShow() {
+  // type.value=1
+  parentId.value=-1
+  // itemType.value=1
+  itemValue.value=""
+  itemName.value=""
   popupShow.value = true
+}
 
+let operateItem=ref<Item>()
+function updatePopupShow(item:Item) {
+  console.log(item)
+  operateItem.value=item;
+  type.value=item.type as number
+  parentId.value=item.parentId as number
+  itemType.value=item.itemType as number
+  itemValue.value=item.value
+  itemName.value=item.name
+  popupShow.value = true
 }
 
 onMounted(async () => {
@@ -301,10 +317,10 @@ function closeDateTabShow() {
   queryItem()
 }
 
-const type = ref("1")
-const itemType = ref("1")
-const itemName = ref()
-const itemValue = ref()
+let type = ref<number>(1)
+let itemType = ref<number>(1)
+let itemName = ref()
+let itemValue = ref()
 
 
 //获取收入支出资产负债数据
@@ -341,12 +357,15 @@ async function queryItem() {
 
 }
 
+function onInertItemChange(event){
+  itemType=event;
+}
 onMounted(async () => {
   // 在组件挂载后获取数据
   queryItem();
 });
-const activeId = ref(1);
-const activeIndex = ref(0);
+let activeId = ref(1);
+let activeIndex = ref(0);
 
 
 </script>
