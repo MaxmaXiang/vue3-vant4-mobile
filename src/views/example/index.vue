@@ -1,16 +1,18 @@
 <template>
   <div class="main">
     <van-row class="head">
-      <van-col span="4"><van-button plain hairline type="default" size="small"
-          @click="changeToIncome()">收入状况</van-button></van-col>
-      <van-col span="4"><van-button plain hairline type="default" size="small"
-          @click="changeTopropertyShow()">资产负债表</van-button></van-col>
-      <van-col span="4">
+      <van-col span="15">
+        <van-button plain hairline type="default" size="small"
+          @click="changeToIncome()">收入状况</van-button>
+        <van-button plain hairline type="default" size="small"
+          @click="changeTopropertyShow()">资产负债表</van-button>
+
         <van-button plain hairline type="default" size="small" @click="chooseDate()">{{ currentDate.toString()
           }}</van-button>
       </van-col>
-      <van-col span="1" offset="9"><van-image position="center" width="4rem" height="4rem" :src="plus"
-          @click="openPopupShow()" /></van-col>
+      <van-col span="1" offset="6">
+        <i class="i-ant-design:plus-circle-outlined text-blue w-8 h-8"  @click="openPopupShow()"/>
+        </van-col>
     </van-row>
 
     <!-- 收入支出tab页 -->
@@ -22,13 +24,15 @@
             @load="onLoad">
             <div v-for="item in currentItem1" :key="item.id">
               <!-- 父项item -->
-              <van-row type="flex" justify="space-between" class="light-green-background" @click="updatePopupShow(item)">
+              <van-row type="flex" justify="space-between" class="light-green-background"
+                @click="updatePopupShow(item)">
                 <van-col class="name-col"><span>{{ item.name }}<span v-if="item.type == 2">:</span></span></van-col>
                 <van-col v-if="item.value" class="value-col"><span>￥{{ item.value }}</span></van-col>
               </van-row>
               <!-- 子项children，使用v-for嵌套在父项下方 -->
               <div v-if="item.children" class="children-indent light-green-background">
-                <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between">
+                <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between"
+                  @click="updatePopupShow(child)">
                   <van-col class="name-col"><span>{{ child.name }}<span v-if="child.type == 2">:</span></span></van-col>
                   <van-col v-if="child.value" class="value-col"><span>￥{{ child.value }}</span></van-col>
                 </van-row>
@@ -36,20 +40,23 @@
             </div>
           </van-list>
         </van-pull-refresh>
-        <van-cell title="总收入" :border="false" style="height: 35px;" center class="small-green-background">{{currentItemIncomeTotal}}</van-cell>
-        <van-cell title="支出" :border="false" style="height: 35px;" center class="custom-cell"/>
+        <van-cell title="总收入" :border="false" style="height: 35px;" center class="small-green-background">{{
+          currentItemIncomeTotal }}</van-cell>
+        <van-cell title="支出" :border="false" style="height: 35px;" center class="custom-cell" />
         <van-pull-refresh v-model="isLoadingPull" @refresh="onRefresh">
           <van-list class="scroll-list" v-model:loading="loading" :finished="finished" finished-text="没有更多了"
             @load="onLoad">
             <div v-for="item in currentItem2" :key="item.id">
               <!-- 父项item -->
-              <van-row type="flex" justify="space-between" class="light-green-background">
+              <van-row type="flex" justify="space-between" class="light-green-background"
+                @click="updatePopupShow(item)">
                 <van-col class="name-col"><span>{{ item.name }}<span v-if="item.type == 2">:</span></span></van-col>
                 <van-col v-if="item.value" class="value-col"><span>￥{{ item.value }}</span></van-col>
               </van-row>
               <!-- 子项children，使用v-for嵌套在父项下方 -->
               <div v-if="item.children" class="children-indent light-green-background">
-                <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between">
+                <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between"
+                  @click="updatePopupShow(child)">
                   <van-col class="name-col"><span>{{ child.name }}<span v-if="child.type == 2">:</span></span></van-col>
                   <van-col v-if="child.value" class="value-col"><span>￥{{ child.value }}</span></van-col>
                 </van-row>
@@ -57,8 +64,11 @@
             </div>
           </van-list>
         </van-pull-refresh>
-        <van-cell title="总支出" :border="false" style="height: 35px;" center  class="small-green-background"/>
-        <van-cell title="每月净现金流" :border="false" style="height: 35px;" center />
+        <van-cell title="总支出" :border="false" style="height: 35px;" center class="small-green-background">{{
+          currentItemExpendTotal }}</van-cell>
+        <van-cell title="每月净现金流" :border="false" style="height: 35px;" center >{{
+          currentItemCashFlow }}</van-cell>
+
       </van-cell-group>
     </div>
 
@@ -71,13 +81,15 @@
             @load="onLoad">
             <div v-for="item in currentItem3" :key="item.id">
               <!-- 父项item -->
-              <van-row type="flex" justify="space-between" class="light-green-background">
+              <van-row type="flex" justify="space-between" class="light-green-background"
+                @click="updatePopupShow(item)">
                 <van-col class="name-col"><span>{{ item.name }}<span v-if="item.type == 2">:</span></span></van-col>
                 <van-col v-if="item.value" class="value-col"><span>￥{{ item.value }}</span></van-col>
               </van-row>
               <!-- 子项children，使用v-for嵌套在父项下方 -->
               <div v-if="item.children" class="children-indent light-green-background">
-                <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between">
+                <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between"
+                  @click="updatePopupShow(child)">
                   <van-col class="name-col"><span>{{ child.name }}<span v-if="child.type == 2">:</span></span></van-col>
                   <van-col v-if="child.value" class="value-col"><span>￥{{ child.value }}</span></van-col>
                 </van-row>
@@ -85,20 +97,23 @@
             </div>
           </van-list>
         </van-pull-refresh>
-        <van-cell title="总资产" :border="false" style="height: 35px;" center  class="small-green-background">{{ currentItemIncomeTotal }}</van-cell>
-        <van-cell title="负债" :border="false" style="height: 35px;" center class="custom-cell"/>
+        <van-cell title="总资产" :border="false" style="height: 35px;" center class="small-green-background">{{
+          currentItemPropertyTotal }}</van-cell>
+        <van-cell title="负债" :border="false" style="height: 35px;" center class="custom-cell" />
         <van-pull-refresh v-model="isLoadingPull" @refresh="onRefresh">
           <van-list class="scroll-list" v-model:loading="loading" :finished="finished" finished-text="没有更多了"
             @load="onLoad">
             <div v-for="item in currentItem4" :key="item.id">
               <!-- 父项item -->
-              <van-row type="flex" justify="space-between" class="light-green-background">
+              <van-row type="flex" justify="space-between" class="light-green-background"
+                @click="updatePopupShow(item)">
                 <van-col class="name-col"><span>{{ item.name }}<span v-if="item.type == 2">:</span></span></van-col>
                 <van-col v-if="item.value" class="value-col"><span>￥{{ item.value }}</span></van-col>
               </van-row>
               <!-- 子项children，使用v-for嵌套在父项下方 -->
               <div v-if="item.children" class="children-indent light-green-background">
-                <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between">
+                <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between"
+                  @click="updatePopupShow(child)">
                   <van-col class="name-col"><span>{{ child.name }}<span v-if="child.type == 2">:</span></span></van-col>
                   <van-col v-if="child.value" class="value-col"><span>￥{{ child.value }}</span></van-col>
                 </van-row>
@@ -106,7 +121,8 @@
             </div>
           </van-list>
         </van-pull-refresh>
-        <van-cell title="总负债" :border="false" style="height: 35px;" center  class="small-green-background"/>
+        <van-cell title="总负债" :border="false" style="height: 35px;" center class="small-green-background">{{
+          currentItemDebtTotal }}</van-cell>
       </van-cell-group>
     </div>
     <!-- 新增修改弹窗 -->
@@ -114,26 +130,31 @@
 
       <van-row>
         <van-col span="10">
-          <van-radio-group v-model.number="itemType" direction="horizontal" @change="onInertItemChange">
-            <van-radio name=1 value=1 shape="square" v-if="incomeShow">收入</van-radio>
-            <van-radio name=2 value=2 shape="square" v-if="incomeShow">支出</van-radio>
+          <van-radio-group v-model="itemType" direction="horizontal">
+            <van-radio name="1" shape="square" v-if="incomeShow">收入</van-radio>
+            <van-radio name="2" shape="square" v-if="incomeShow">支出</van-radio>
 
-            <van-radio name=3 value=3 shape="square" v-if="propertyShow">资产</van-radio>
-            <van-radio name=4 value=4 shape="square" v-if="propertyShow">负债</van-radio>
+            <van-radio name="3" shape="square" v-if="propertyShow">资产</van-radio>
+            <van-radio name="4" shape="square" v-if="propertyShow">负债</van-radio>
           </van-radio-group>
-          <van-radio-group v-model.number="type" direction="horizontal">
-            <van-radio name=1 value="1" shape="square">文件夹</van-radio>
-            <van-radio name=2 value="2" shape="square">文件</van-radio>
+          <van-radio-group v-model="type" direction="horizontal">
+            <van-radio name="1" shape="square">文件夹</van-radio>
+            <van-radio name="2" shape="square">文件</van-radio>
           </van-radio-group>
 
         </van-col>
-        <van-button span="4" @click="openTreeSelectTabShow" size="normal" v-if="type==2">选择父id</van-button>
-        <van-col span="4" offset="4"><img :src="plane" @click="addItem()" /></van-col>
+        <van-button round span="4" @click="openTreeSelectTabShow" size="normal" v-if="type == '2'">选择父id</van-button>
+        <van-col span="4" offset="4"><i class="i-ph:paper-plane-right-fill text-blue w-9 h-9" @click="addItem()" /></van-col>
       </van-row>
 
 
       <van-field v-model="itemName" label="名称" placeholder="请输入名称" />
-      <van-field v-model="itemValue" label="值" placeholder="请输入值" />
+      <van-field v-model="itemValue" label="值" placeholder="请输入值" v-if="type == '2'"/>
+
+      <div class="flex justify-end mt-4"> <!-- 添加这个Flex容器并应用靠右对齐 -->
+        <i class="i-ant-design:delete-twotone mr-2 text-lg" @click="deleteItem" style="color: red;" />
+        <!-- 假设你有一个删除函数 -->
+      </div>
     </van-popup>
 
 
@@ -197,7 +218,11 @@ let loading = ref(false);
 let finished = ref(false);
 let isLoadingPull = ref(true);
 let parentId = ref<number>(-1);
-let currentItemIncomeTotal=ref<number>(0)
+let currentItemIncomeTotal = ref<number>(0)
+let currentItemExpendTotal = ref<number>(0)
+let currentItemPropertyTotal = ref<number>(0)
+let currentItemDebtTotal = ref<number>(0)
+let currentItemCashFlow = ref<number>(0)
 function onRefresh() {
   queryItem()
   isLoadingPull.value = false
@@ -240,27 +265,34 @@ function changeToIncome() {
 }
 
 function closePopupShow() {
+  type.value = "1"
+  parentId.value = -1
+  itemType.value = "1"
+  itemValue.value = ""
+  itemName.value = ""
+  itemId.value = 0
   popupShow.value = false
 }
 
 function openPopupShow() {
-  // type.value=1
-  parentId.value=-1
-  // itemType.value=1
-  itemValue.value=""
-  itemName.value=""
+  type.value = "1"
+  parentId.value = -1
+  itemType.value = "1"
+  itemValue.value = ""
+  itemName.value = ""
+  itemId.value = 0
   popupShow.value = true
 }
 
-let operateItem=ref<Item>()
-function updatePopupShow(item:Item) {
+//更新项
+function updatePopupShow(item: Item) {
   console.log(item)
-  operateItem.value=item;
-  type.value=item.type as number
-  parentId.value=item.parentId as number
-  itemType.value=item.itemType as number
-  itemValue.value=item.value
-  itemName.value=item.name
+  itemId.value = item.id
+  type.value = String(item.type) as string
+  parentId.value = item.parentId as number
+  itemType.value = String(item.itemType) as string
+  itemValue.value = item.value
+  itemName.value = item.name
   popupShow.value = true
 }
 
@@ -285,24 +317,65 @@ function openTreeSelectTabShow() {
 }
 
 async function addItem() {
-  let item = {
-    userName: Storage.get("username"),
-    date: currentDate.value[0] + "-" + currentDate.value[1] + "-01",
-    type: type.value,
-    parentId: parentId.value,
-    itemType: itemType.value,
-    value: itemValue.value,
-    name: itemName.value,
-    createBy: Storage.get("username"),
-  };
-  try {
-    await mouseStore.insert(item); // 使用 await 等待异步操作完成
-    showToast('新增成功！');
-    queryItem()
-  } catch (error) {
-    showToast('新增失败！');
-    console.error('添加失败:', error);
-    // 这里可以添加错误处理逻辑
+  if (itemId.value == 0) {
+    let item = {
+      userName: Storage.get("username"),
+      date: currentDate.value[0] + "-" + currentDate.value[1] + "-01",
+      type: type.value,
+      parentId: parentId.value,
+      itemType: itemType.value,
+      value: itemValue.value,
+      name: itemName.value,
+      createBy: Storage.get("username"),
+    };
+    try {
+      await mouseStore.insert(item); // 使用 await 等待异步操作完成
+      showToast('新增成功！');
+      queryItem()
+    } catch (error) {
+      showToast('新增失败！');
+      console.error('添加失败:', error);
+      // 这里可以添加错误处理逻辑
+    }
+  } else {
+    let item = {
+      id: itemId.value,
+      userName: Storage.get("username"),
+      date: currentDate.value[0] + "-" + currentDate.value[1] + "-01",
+      type: type.value,
+      parentId: parentId.value,
+      itemType: itemType.value,
+      value: itemValue.value,
+      name: itemName.value,
+      createBy: Storage.get("username"),
+    };
+    try {
+      await mouseStore.update(item); // 使用 await 等待异步操作完成
+      showToast('更新成功！');
+      queryItem()
+    } catch (error) {
+      showToast('更新失败！');
+      console.error('更新失败:', error);
+      // 这里可以添加错误处理逻辑
+    }
+  }
+  popupShow.value = false
+}
+
+async function deleteItem() {
+  if (itemId.value != 0) {
+    let item = {
+      id: itemId.value,
+    };
+    try {
+      await mouseStore.deleteItem(item); // 使用 await 等待异步操作完成
+      showToast('删除成功！');
+      queryItem()
+    } catch (error) {
+      showToast('删除失败！');
+      console.error('删除失败:', error);
+      // 这里可以添加错误处理逻辑
+    }
   }
   popupShow.value = false
 }
@@ -317,8 +390,10 @@ function closeDateTabShow() {
   queryItem()
 }
 
-let type = ref<number>(1)
-let itemType = ref<number>(1)
+//当前操作项的数据
+let itemId = ref<number>(0)
+let type = ref<string>("1")
+let itemType = ref<string>("1")
 let itemName = ref()
 let itemValue = ref()
 
@@ -340,15 +415,22 @@ async function queryItem() {
   try {
 
     const response = await mouseStore.query(item); // 使用 await 等待异步操作完成
+    //收入支出资产负债列表
     currentItem1.value = response.data[0].itemList
     currentItem2.value = response.data[1].itemList
     currentItem3.value = response.data[2].itemList
     currentItem4.value = response.data[3].itemList
+    //收入支出资产负债的父id列表
     currentItem0Type1.value = mouseStore.getCurrentItem0Type1
     currentItem1Type1.value = mouseStore.getCurrentItem1Type1
     currentItem2Type1.value = mouseStore.getCurrentItem2Type1
     currentItem3Type1.value = mouseStore.getCurrentItem3Type1
-    currentItemIncomeTotal.value=mouseStore.getCurrentItemIncomeTotal
+    ////收入支出资产负债的总和值
+    currentItemIncomeTotal.value = mouseStore.getCurrentItemIncomeTotal
+    currentItemExpendTotal.value = mouseStore.getCurrentItemExpendTotal
+    currentItemPropertyTotal.value = mouseStore.getCurrentItemPropertyTotal
+    currentItemDebtTotal.value = mouseStore.getCurrentItemDebtTotal
+    currentItemCashFlow.value = mouseStore.getCurrentItemCashFlow
   } catch (error) {
     console.error('添加失败:', error);
     router.push(PageEnum.BASE_LOGIN)
@@ -357,9 +439,6 @@ async function queryItem() {
 
 }
 
-function onInertItemChange(event){
-  itemType=event;
-}
 onMounted(async () => {
   // 在组件挂载后获取数据
   queryItem();
@@ -441,7 +520,7 @@ let activeIndex = ref(0);
 }
 
 .scroll-list {
-  height: 200px;
+  height: 175px;
   /* 列表固定高度 */
   overflow-y: scroll;
   /* 允许垂直滚动 */
@@ -465,6 +544,7 @@ let activeIndex = ref(0);
   background-color: #C4ECCA;
   /* 浅绿色背景 */
 }
+
 .small-green-background {
   background-color: #D6EBDE;
   /* 浅绿色背景 */

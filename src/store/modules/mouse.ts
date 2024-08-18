@@ -69,6 +69,32 @@ export const useMouseStore = defineStore({
       let total=sumItemValues(s)
       return total;
     },
+    //总支出
+    getCurrentItemExpendTotal(state): number {
+      let s=(state.currentItem[1].itemList || [])
+      let total=sumItemValues(s)
+      return total;
+    },
+    //总资产
+    getCurrentItemPropertyTotal(state): number {
+      let s=(state.currentItem[2].itemList || [])
+      let total=sumItemValues(s)
+      return total;
+    },
+    //总负债
+    getCurrentItemDebtTotal(state): number {
+      let s=(state.currentItem[3].itemList || [])
+      let total=sumItemValues(s)
+      return total;
+    },
+    //每月净现金流
+    getCurrentItemCashFlow(state): number {
+      let s=(state.currentItem[0].itemList || [])
+      let total=sumItemValues(s)
+      let s1=(state.currentItem[1].itemList || [])
+      let total2=sumItemValues(s1)
+      return total-total2;
+    },
   },
   actions: {
     async insert(item) {

@@ -97,6 +97,7 @@ export const useUserStore = defineStore({
         if (code === ResultEnum.SUCCESS) {
           Storage.set("userId",data.id)
           this.setUserInfo(data)
+          this.setToken(data.token)
         }
         return Promise.resolve(response)
       }
