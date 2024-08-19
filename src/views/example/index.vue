@@ -141,7 +141,10 @@
             <van-radio name="1" shape="square">文件夹</van-radio>
             <van-radio name="2" shape="square">文件</van-radio>
           </van-radio-group>
-
+          <van-radio-group v-model="itemloopMode" direction="horizontal">
+            <van-radio name="1" shape="square">单次</van-radio>
+            <van-radio name="2" shape="square">每月</van-radio>
+          </van-radio-group>
         </van-col>
         <van-button round span="4" @click="openTreeSelectTabShow" size="normal" v-if="type == '2'">选择父id</van-button>
         <van-col span="4" offset="4"><i class="i-ph:paper-plane-right-fill text-blue w-9 h-9" @click="addItem()" /></van-col>
@@ -152,8 +155,7 @@
       <van-field v-model="itemValue" label="值" placeholder="请输入值" v-if="type == '2'"/>
 
       <div class="flex justify-end mt-4"> <!-- 添加这个Flex容器并应用靠右对齐 -->
-        <i class="i-ant-design:delete-twotone mr-2 text-lg" @click="deleteItem" style="color: red;" />
-        <!-- 假设你有一个删除函数 -->
+        <i class="i-ant-design:delete-twotone mr-2 text-lg" @click="deleteItem" style="color: red;" v-if="itemId != 0"/>
       </div>
     </van-popup>
 
@@ -178,22 +180,14 @@
 
 <script setup lang="ts">
 import { useMouseStore, ItemList, Item } from '@/store/modules/mouse'
-import { useUserStore } from '@/store/modules/user'
-import { useDark, useToggle } from '@vueuse/core'
-import { useDesignSettingStore } from '@/store/modules/designSetting'
-import { showDialog, showToast } from 'vant';
-import plane from '@/assets/icons/plane.svg';
-import income from '@/views/example/components/income.vue'
-import property from '@/views/example/components/property.vue'
+import {  showToast } from 'vant';
 import { createStorage } from '@/utils/Storage'
-import plus from '@/assets/icons/plus.svg'
 import { onMounted } from 'vue'
 import router from '@/router'
 import { PageEnum } from '@/enums/pageEnum'
 const Storage = createStorage({ storage: localStorage })
 // 使用 useUserStore 获取 store 实例
 const mouseStore = useMouseStore();
-const userStore = useUserStore();
 
 onMounted(() => {
 
@@ -271,6 +265,7 @@ function closePopupShow() {
   itemValue.value = ""
   itemName.value = ""
   itemId.value = 0
+  itemloopMode.value = ""
   popupShow.value = false
 }
 
@@ -281,18 +276,19 @@ function openPopupShow() {
   itemValue.value = ""
   itemName.value = ""
   itemId.value = 0
+  itemloopMode.value = ""
   popupShow.value = true
 }
 
 //更新项
 function updatePopupShow(item: Item) {
-  console.log(item)
   itemId.value = item.id
   type.value = String(item.type) as string
   parentId.value = item.parentId as number
   itemType.value = String(item.itemType) as string
   itemValue.value = item.value
   itemName.value = item.name
+  itemloopMode.value = String(item.loopMode) as string
   popupShow.value = true
 }
 
@@ -319,6 +315,7 @@ function openTreeSelectTabShow() {
 async function addItem() {
   if (itemId.value == 0) {
     let item = {
+      loopMode:itemloopMode.value,
       userName: Storage.get("username"),
       date: currentDate.value[0] + "-" + currentDate.value[1] + "-01",
       type: type.value,
@@ -339,6 +336,7 @@ async function addItem() {
     }
   } else {
     let item = {
+      loopMode:itemloopMode.value,
       id: itemId.value,
       userName: Storage.get("username"),
       date: currentDate.value[0] + "-" + currentDate.value[1] + "-01",
@@ -396,6 +394,7 @@ let type = ref<string>("1")
 let itemType = ref<string>("1")
 let itemName = ref()
 let itemValue = ref()
+let itemloopMode = ref<string>("")
 
 
 //获取收入支出资产负债数据

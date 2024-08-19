@@ -6,11 +6,12 @@ import { ResultEnum } from '@/enums/httpEnum'
 import { insert, update, deleteItem, query, queryEcharts } from '@/api/system/mouse'
 import { PageEnum } from '@/enums/pageEnum'
 import router from '@/router'
-import {sumItemValues} from '@/utils/sum'
+import { sumItemValues } from '@/utils/sum'
 const Storage = createStorage({ storage: localStorage })
 
-export  interface Item {
+export interface Item {
   "id": number,
+  "loopMode": number,
   "userName": Nullable<string>,
   "parentId": Nullable<number>,
   "type": Nullable<number>,
@@ -27,9 +28,20 @@ export  interface Item {
 }
 
 export interface ItemList {
-  itemTypeStr:Nullable<string>,
-  itemType:Nullable<number>,
-  itemList:Nullable<[Item]>
+  itemTypeStr: Nullable<string>,
+  itemType: Nullable<number>,
+  itemList: Nullable<[Item]>
+}
+
+export interface EchartVo {
+  chartName: string,
+  xList: string[],
+  yVoList: ChartYVo[]
+}
+
+export interface ChartYVo {
+  lineName: string,
+  yList: string[]
 }
 
 
@@ -37,7 +49,9 @@ export interface ItemList {
 export const useMouseStore = defineStore({
   id: 'app-mouse',
   state: () => ({
-    currentItem: ref<ItemList[]>([])
+    currentItem: ref<ItemList[]>([]),
+    echartVo: ref<EchartVo[]>([])
+
   }),
   getters: {
     getCurrentItem(): ItemList[] {
@@ -65,35 +79,35 @@ export const useMouseStore = defineStore({
     },
     //总收入
     getCurrentItemIncomeTotal(state): number {
-      let s=(state.currentItem[0].itemList || [])
-      let total=sumItemValues(s)
+      let s = (state.currentItem[0].itemList || [])
+      let total = sumItemValues(s)
       return total;
     },
     //总支出
     getCurrentItemExpendTotal(state): number {
-      let s=(state.currentItem[1].itemList || [])
-      let total=sumItemValues(s)
+      let s = (state.currentItem[1].itemList || [])
+      let total = sumItemValues(s)
       return total;
     },
     //总资产
     getCurrentItemPropertyTotal(state): number {
-      let s=(state.currentItem[2].itemList || [])
-      let total=sumItemValues(s)
+      let s = (state.currentItem[2].itemList || [])
+      let total = sumItemValues(s)
       return total;
     },
     //总负债
     getCurrentItemDebtTotal(state): number {
-      let s=(state.currentItem[3].itemList || [])
-      let total=sumItemValues(s)
+      let s = (state.currentItem[3].itemList || [])
+      let total = sumItemValues(s)
       return total;
     },
     //每月净现金流
     getCurrentItemCashFlow(state): number {
-      let s=(state.currentItem[0].itemList || [])
-      let total=sumItemValues(s)
-      let s1=(state.currentItem[1].itemList || [])
-      let total2=sumItemValues(s1)
-      return total-total2;
+      let s = (state.currentItem[0].itemList || [])
+      let total = sumItemValues(s)
+      let s1 = (state.currentItem[1].itemList || [])
+      let total2 = sumItemValues(s1)
+      return total - total2;
     },
   },
   actions: {
@@ -159,7 +173,7 @@ export const useMouseStore = defineStore({
         const response = await queryEcharts(item)
         const { data, code } = response
         if (code === ResultEnum.SUCCESS) {
-
+          this.echartVo = data
         }
         return Promise.resolve(response)
       }

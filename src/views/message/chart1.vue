@@ -5,12 +5,31 @@
 </template>
 
 <script setup lang="ts">
+import { createStorage } from '@/utils/Storage'
+import { useMouseStore, ItemList, Item } from '@/store/modules/mouse'
 import type { EChartsOption } from 'echarts'
 import { useECharts } from '@/hooks/web/useECharts'
 
 const chartRef = ref<HTMLDivElement | null>(null)
 const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>)
 
+const Storage = createStorage({ storage: localStorage })
+// 使用 useUserStore 获取 store 实例
+const mouseStore = useMouseStore();
+onMounted(async () => {
+  // 在组件挂载后获取数据
+  let item = {
+    period: 1,
+    userName: Storage.get("username"),
+    year: 2024
+  }
+  try {
+    const response = await mouseStore.queryEcharts(item); // 使用 await 等待异步操作完成
+  } catch (error) {
+    console.error('添加失败:', error);
+    // 这里可以添加错误处理逻辑
+  }
+});
 const chartOptions: EChartsOption = {
   title: {
     text: '收入支出表',
@@ -24,7 +43,7 @@ const chartOptions: EChartsOption = {
     data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月']  // 类目数据
   },
   yAxis: {
-    
+
     axisLabel: {
       margin: 1,
       // rotate: 30 ,
