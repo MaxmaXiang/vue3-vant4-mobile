@@ -23,7 +23,7 @@ export function useECharts(
 
   let chartInstance: echarts.ECharts | null = null
   let resizeFn: Fn = resize
-  const cacheOptions = ref({})
+  let cacheOptions = ref({})
   let removeResizeFn: Fn = () => {}
   resizeFn = useDebounceFn(resize, 200)
 
@@ -63,7 +63,7 @@ export function useECharts(
     if (unref(elRef)?.offsetHeight === 0) {
       useTimeoutFn(() => {
         setOptions(unref(getOptions))
-      }, 30)
+      }, 50)
       return
     }
     nextTick(() => {
@@ -78,7 +78,7 @@ export function useECharts(
         clear && chartInstance?.clear()
 
         chartInstance?.setOption(unref(getOptions))
-      }, 30)
+      }, 50)
     })
   }
 

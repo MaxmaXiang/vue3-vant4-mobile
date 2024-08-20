@@ -441,7 +441,18 @@ async function queryItem() {
 onMounted(async () => {
   // 在组件挂载后获取数据
   queryItem();
+  queryEcharts();
 });
+
+
+async function queryEcharts(){
+  let item = {
+    period: 1,
+    userName: Storage.get("username"),
+    year: 2024
+  }
+  const response = await mouseStore.queryEcharts(item); // 使用 await 等待异步操作完成
+}
 let activeId = ref(1);
 let activeIndex = ref(0);
 

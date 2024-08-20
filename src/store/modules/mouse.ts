@@ -35,13 +35,13 @@ export interface ItemList {
 
 export interface EchartVo {
   chartName: string,
-  xList: string[],
-  yVoList: ChartYVo[]
+  xlist: string[],
+  yvoList: ChartYVo[]
 }
 
 export interface ChartYVo {
   lineName: string,
-  yList: string[]
+  ylist: string[]
 }
 
 
@@ -51,11 +51,13 @@ export const useMouseStore = defineStore({
   state: () => ({
     currentItem: ref<ItemList[]>([]),
     echartVo: ref<EchartVo[]>([])
-
   }),
   getters: {
     getCurrentItem(): ItemList[] {
       return this.currentItem
+    },
+    getCurrentEchartVo(): EchartVo[] {
+      return this.echartVo
     },
     getCurrentItem0Type1(state): Item[] {
       return (state.currentItem[0].itemList || []).filter((item, index, array) => {
@@ -109,6 +111,14 @@ export const useMouseStore = defineStore({
       let total2 = sumItemValues(s1)
       return total - total2;
     },
+    //收入支出表
+    // getCurrentItemChartIncome(state): number {
+    //   let s = (state.echartVo[0].itemList || [])
+    //   let total = sumItemValues(s)
+    //   let s1 = (state.currentItem[1].itemList || [])
+    //   let total2 = sumItemValues(s1)
+    //   return total - total2;
+    // },
   },
   actions: {
     async insert(item) {
