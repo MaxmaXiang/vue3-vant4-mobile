@@ -152,6 +152,15 @@ const routeModuleList: Array<RouteRecordRaw> = [
     component: () => import('@/views/my/ThemeSetting.vue'),
   },
   {
+    path: '/tagManage',
+    name: 'TagManage',
+    meta: {
+      title: '标签管理',
+      innerPage: true,
+    },
+    component: () => import('@/views/my/TagManage.vue'),
+  },
+  {
     path: '/dateAndTime',
     name: 'DateAndTime',
     meta: {

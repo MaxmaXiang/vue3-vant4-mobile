@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, unref, watch } from 'vue'
 import { createStorage } from '@/utils/Storage'
-import { useMouseStore, EchartVo, ChartYVo } from '@/store/modules/mouse'
+import { useMouseStore,ChartVo } from '@/store/modules/mouse'
 import type { EChartsOption } from 'echarts'
 import { useECharts } from '@/hooks/web/useECharts'
 import { ResultEnum } from '@/enums/httpEnum'
@@ -17,8 +17,8 @@ const { setOptions, echarts } = useECharts(chartRef as Ref<HTMLDivElement>)
 const Storage = createStorage({ storage: localStorage })
 // 使用 useUserStore 获取 store 实例
 const mouseStore = useMouseStore();
-let echartVo2 = ref<EchartVo[]>([])
-let echartVo = reactive(echartVo2.value);
+let echartVo = ref<ChartVo[]>([])
+
 onMounted(async () => {
   // 在组件挂载后获取数据
   let item = {
@@ -30,14 +30,14 @@ onMounted(async () => {
     const response = await mouseStore.queryEcharts(item); // 使用 await 等待异步操作完成
     const { data, code } = response
     if (code === ResultEnum.SUCCESS) {
-      echartVo = mouseStore.getCurrentEchartVo
+      echartVo.value = mouseStore.getCurrentEchartVo
       // console.log("@@@"+JSON.stringify(echartVo.value))
       setOptions(({
         title: {
-          text: "收入",
+          text: "收入支出表",
         },
         legend: {
-          data: ['收入', '支出'],
+          data: ['收入', '支出','每月净现金流'],
           top: '10%',
         },
         // dataZoom: [
@@ -55,7 +55,7 @@ onMounted(async () => {
 
           },
           type: 'category',  // x坐标轴类型
-          data: echartVo && echartVo[0] ? echartVo[0].xlist : []
+          data: echartVo.value.map(d=>d.dateStr)
           // data: ["1","222"]
         },
         yAxis: {
@@ -69,21 +69,21 @@ onMounted(async () => {
         },
         series: [{
           name: '收入',
-          data: echartVo && echartVo[0] ? echartVo[0].yvoList[0].ylist : [],
+          data: echartVo.value.map(d=>d.income),
           type: 'line'   // 图表类型 线形图
         },
         {
 
           name: '支出',
-          data: echartVo && echartVo[0] ? echartVo[0].yvoList[1].ylist : [],
+          data: echartVo.value.map(d=>d.expend),
           type: 'line'   // 图表类型 线形图
         },
-          // {
+          {
 
-          //   name: '每月净现金流',
-          //   data: [20, 342, 301, 334, 590, 430, 120],  // 数据内容数组
-          //   type: 'line'   // 图表类型 线形图
-          // }
+            name: '每月净现金流',
+            data: echartVo.value.map(d=>d.profit),
+            type: 'line'   // 图表类型 线形图
+          }
         ]
       }));
     }

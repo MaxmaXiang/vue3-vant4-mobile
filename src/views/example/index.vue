@@ -126,7 +126,7 @@
       </van-cell-group>
     </div>
     <!-- 新增修改弹窗 -->
-    <van-popup v-model:show="popupShow" position="bottom" :style="{ height: '30%' }" @click-overlay="closePopupShow()">
+    <van-popup v-model:show="popupShow" round transition-appear:true position="bottom" :style="{ height: '30%' }" @click-overlay="closePopupShow()">
 
       <van-row>
         <van-col span="10">
@@ -145,6 +145,8 @@
             <van-radio name="1" shape="square">单次</van-radio>
             <van-radio name="2" shape="square">每月</van-radio>
           </van-radio-group>
+          <!-- 设置标签 -->
+          <i class="i-mdi:tag-outline" @click="tagSelectTabShow=true"/>
         </van-col>
         <van-button round span="4" @click="openTreeSelectTabShow" size="normal" v-if="type == '2'">选择父id</van-button>
         <van-col span="4" offset="4"><i class="i-ph:paper-plane-right-fill text-blue w-9 h-9" @click="addItem()" /></van-col>
@@ -175,11 +177,17 @@
         :columns-field-names="customFieldName" />
     </van-popup>
 
+<!-- 标签选择弹窗 -->
+<van-popup v-model:show="tagSelectTabShow" position="bottom" :style="{ height: '30%' }"
+      @click-overlay="closeTagTab()">
+      <<van-picker title="选择标签" :columns="itemTags" @confirm="onTagConfirm" @cancel="closeTagTab" @change="onChange"
+      :columns-field-names="tagFieldName" />
+    </van-popup>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useMouseStore, ItemList, Item } from '@/store/modules/mouse'
+import { useMouseStore, ItemList, Item,ItemTag } from '@/store/modules/mouse'
 import {  showToast } from 'vant';
 import { createStorage } from '@/utils/Storage'
 import { onMounted } from 'vue'
@@ -202,6 +210,8 @@ let popupShow = ref(false)
 let dateTabShow = ref(false)
 //选择父id页是否展示
 let treeSelectTabShow = ref(false)
+//选择标签页是否展示
+let tagSelectTabShow = ref(false)
 
 var getTime = new Date().getTime(); //获取到当前时间戳
 var time = new Date(getTime); //创建一个日期对象
@@ -232,19 +242,29 @@ let minDate = new Date(2020, 0, 1)
 let maxDate = new Date(2090, 0, 1)
 
 interface column {
-  text: string,
-  value: string
+  name: Nullable<string>,
+  id: number
 }
 //父id选择弹窗
 const onConfirm = ({ selectedValues }) => {
   parentId.value = selectedValues[0]
   treeSelectTabShow.value = false
 };
+//标签选择弹窗
+const onTagConfirm = ({ selectedValues }) => {
+  itemTags.value?.push(selectedValues[0])
+  tagSelectTabShow.value = false
+};
 const onChange = ({ selectedValues }) => {
 };
 const onCancel = () => treeSelectTabShow.value = false;
 const customFieldName = {
   text: 'name',
+  value: 'id',
+};
+
+const tagFieldName = {
+  text: 'tagName',
   value: 'id',
 };
 
@@ -266,6 +286,7 @@ function closePopupShow() {
   itemName.value = ""
   itemId.value = 0
   itemloopMode.value = ""
+  itemTags.value=[]
   popupShow.value = false
 }
 
@@ -278,6 +299,7 @@ function openPopupShow() {
   itemId.value = 0
   itemloopMode.value = ""
   popupShow.value = true
+  itemTags.value=[]
 }
 
 //更新项
@@ -290,6 +312,7 @@ function updatePopupShow(item: Item) {
   itemName.value = item.name
   itemloopMode.value = String(item.loopMode) as string
   popupShow.value = true
+  itemTags.value=item.tagList
 }
 
 onMounted(async () => {
@@ -388,6 +411,11 @@ function closeDateTabShow() {
   queryItem()
 }
 
+function closeTagTab() {
+  tagSelectTabShow.value = false;
+}
+
+
 //当前操作项的数据
 let itemId = ref<number>(0)
 let type = ref<string>("1")
@@ -395,6 +423,7 @@ let itemType = ref<string>("1")
 let itemName = ref()
 let itemValue = ref()
 let itemloopMode = ref<string>("")
+let itemTags = ref<ItemTag[]>()
 
 
 //获取收入支出资产负债数据
@@ -402,7 +431,7 @@ let currentItem1 = ref<Item[]>([])
 let currentItem2 = ref<Item[]>([])
 let currentItem3 = ref<Item[]>([])
 let currentItem4 = ref<Item[]>([])
-let currentItem0Type1 = ref<Item[]>([])
+let currentItem0Type1 = ref<column[]>([])
 let currentItem1Type1 = ref<Item[]>([])
 let currentItem2Type1 = ref<Item[]>([])
 let currentItem3Type1 = ref<Item[]>([])

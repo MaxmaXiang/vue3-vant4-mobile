@@ -24,7 +24,8 @@ export interface Item {
   "updateBy": Nullable<string>,
   "updateTime": Nullable<string>,
   "ifDelete": number,
-  "children": Nullable<[Item]>
+  "children": Nullable<[Item]>,
+  tagList:ItemTag[]
 }
 
 export interface ItemList {
@@ -33,30 +34,35 @@ export interface ItemList {
   itemList: Nullable<[Item]>
 }
 
-export interface EchartVo {
-  chartName: string,
-  xlist: string[],
-  yvoList: ChartYVo[]
+export interface ItemTag{
+  id:number,
+  itemId:number,
+  tagName:string,
+  userName:string
 }
 
-export interface ChartYVo {
-  lineName: string,
-  ylist: string[]
+export interface ChartVo{
+  dateStr:string,
+  date:string,
+  income:number,
+  expend:number,
+  profit:number,
+  property:number,
+  debt:number,
+  propertySecondOrderAdmittance:number
 }
-
-
 
 export const useMouseStore = defineStore({
   id: 'app-mouse',
   state: () => ({
     currentItem: ref<ItemList[]>([]),
-    echartVo: ref<EchartVo[]>([])
+    echartVo: ref<ChartVo[]>([])
   }),
   getters: {
     getCurrentItem(): ItemList[] {
       return this.currentItem
     },
-    getCurrentEchartVo(): EchartVo[] {
+    getCurrentEchartVo(): ChartVo[] {
       return this.echartVo
     },
     getCurrentItem0Type1(state): Item[] {

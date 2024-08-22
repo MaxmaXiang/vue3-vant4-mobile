@@ -1,22 +1,28 @@
 <template>
   <div>
-    <div :style="getUserCoverBg" class="my-bg h-70" />
+    <!-- <div :style="getUserCoverBg" class="my-bg h-70" /> -->
+    <div  class="my-bg h-70" />
     <div
       class="my-card relative mx-6 flex flex-col items-center rounded-2xl pb-2 shadow-xl -top-18"
     >
-      <van-image
+      <!-- <van-image
         class="h-22 w-22 border-2 border-solid !absolute -top-10"
         round
         fit="cover"
         :src="avatar"
+      /> -->
+      <van-image
+        class="h-22 w-22 border-2 border-solid !absolute -top-10"
+        round
+        fit="cover"
       />
       <div class="mt-14 flex flex-col items-center">
         <p class="mb-2 text-5 font-black">
-          {{ nickname }}
+          {{ username }}
         </p>
-        <p class="text-4">
-          {{ sign }}
-        </p>
+        <!-- <p class="text-4">
+          {{ username }}
+        </p> -->
       </div>
       <van-divider class="w-full" />
 
@@ -35,6 +41,12 @@
       <van-cell :border="false" title="主题设置" is-link to="/themeSetting">
         <template #icon>
           <i class="i-material-symbols:palette mr-2 text-xl" />
+        </template>
+      </van-cell>
+
+      <van-cell :border="false" title="标签管理" is-link to="/tagManage">
+        <template #icon>
+          <i class="i-ic:baseline-bookmarks mr-2 text-xl" />
         </template>
       </van-cell>
 
@@ -97,7 +109,7 @@ function toggle() {
 const userStore = useUserStore()
 const showLogoutAction = ref(false)
 
-const { nickname, avatar, cover, sign } = userStore.getUserInfo
+const { username } = userStore.getUserInfo
 
 const logoutActions = [
   {
@@ -110,9 +122,9 @@ const logoutActions = [
   },
 ]
 
-const getUserCoverBg = computed(() => {
-  return { backgroundImage: `url(${cover || avatar})` }
-})
+// const getUserCoverBg = computed(() => {
+//   return { backgroundImage: `url(${cover || avatar})` }
+// })
 </script>
 
 <style lang="less" scoped>
