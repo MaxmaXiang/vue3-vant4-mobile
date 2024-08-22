@@ -180,7 +180,7 @@
 <!-- 标签选择弹窗 -->
 <van-popup v-model:show="tagSelectTabShow" position="bottom" :style="{ height: '30%' }"
       @click-overlay="closeTagTab()">
-      <<van-picker title="选择标签" :columns="itemTags" @confirm="onTagConfirm" @cancel="closeTagTab" @change="onChange"
+      <van-picker title="选择标签" :columns="itemTags" @confirm="onTagConfirm" @cancel="closeTagTab" @change="onChange"
       :columns-field-names="tagFieldName" />
     </van-popup>
   </div>

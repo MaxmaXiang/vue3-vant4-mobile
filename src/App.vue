@@ -74,4 +74,7 @@ const getTransitionName = computed(() => {
 
 <style lang="less">
   @import './styles/index.less';
+  #app {
+  background-color: #F3F4F9; /* 举例的底色 */
+}
 </style>
