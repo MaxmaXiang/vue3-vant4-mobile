@@ -1,7 +1,7 @@
 <template>
   <div>
-    <van-button size="small" round @click="changePeriod(1)">按月统计</van-button>
-    <van-button size="small" round @click="changePeriod(2)">按年统计</van-button>
+    <van-button size="small" round @click="changePeriod(1)" :class="item.period==1 ? 'active' : ''">按月统计</van-button>
+    <van-button size="small" round @click="changePeriod(2)" :class="item.period==2 ? 'active' : ''">按年统计</van-button>
     <van-button size="small" round v-show="item.period == 1" @click="dateTabShow=true">{{ item.year }}</van-button>
     <div class="my-card m-40px rounded-2xl p-30px shadow-xl">
       <div ref="chartRef1" :style="{ height: '380px' }" />
@@ -255,4 +255,9 @@ onMounted(async () => {
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.active{
+  background-color: blue;
+  color: aliceblue
+}
+</style>

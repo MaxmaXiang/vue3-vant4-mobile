@@ -26,6 +26,9 @@
               <!-- 父项item -->
               <van-row type="flex" justify="space-between" class="light-green-background"
                 @click="updatePopupShow(item)">
+                <i class="i-octicon:file-directory-open-fill-24" v-if="item.type == 1"/>
+                <i class="i-ic:outline-insert-drive-file" v-if="item.type == 2"/>
+                &nbsp;
                 <van-col class="name-col"><span>{{ item.name }}<span v-if="item.type == 2">:</span></span></van-col>
                 <van-col v-if="item.value" class="value-col"><span>￥{{ item.value }}</span></van-col>
               </van-row>
@@ -33,6 +36,9 @@
               <div v-if="item.children" class="children-indent light-green-background">
                 <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between"
                   @click="updatePopupShow(child)">
+                  <i class="i-octicon:file-directory-open-fill-24" v-if="child.type == 1"/>
+                <i class="i-ic:outline-insert-drive-file" v-if="child.type == 2"/>
+                &nbsp;
                   <van-col class="name-col"><span>{{ child.name }}<span v-if="child.type == 2">:</span></span></van-col>
                   <van-col v-if="child.value" class="value-col"><span>￥{{ child.value }}</span></van-col>
                 </van-row>
@@ -50,6 +56,9 @@
               <!-- 父项item -->
               <van-row type="flex" justify="space-between" class="light-green-background"
                 @click="updatePopupShow(item)">
+                <i class="i-octicon:file-directory-open-fill-24" v-if="item.type == 1"/>
+                <i class="i-ic:outline-insert-drive-file" v-if="item.type == 2"/>
+                &nbsp;
                 <van-col class="name-col"><span>{{ item.name }}<span v-if="item.type == 2">:</span></span></van-col>
                 <van-col v-if="item.value" class="value-col"><span>￥{{ item.value }}</span></van-col>
               </van-row>
@@ -57,6 +66,9 @@
               <div v-if="item.children" class="children-indent light-green-background">
                 <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between"
                   @click="updatePopupShow(child)">
+                  <i class="i-octicon:file-directory-open-fill-24" v-if="child.type == 1"/>
+                <i class="i-ic:outline-insert-drive-file" v-if="child.type == 2"/>
+                &nbsp;
                   <van-col class="name-col"><span>{{ child.name }}<span v-if="child.type == 2">:</span></span></van-col>
                   <van-col v-if="child.value" class="value-col"><span>￥{{ child.value }}</span></van-col>
                 </van-row>
@@ -83,6 +95,9 @@
               <!-- 父项item -->
               <van-row type="flex" justify="space-between" class="light-green-background"
                 @click="updatePopupShow(item)">
+                <i class="i-octicon:file-directory-open-fill-24" v-if="item.type == 1"/>
+                <i class="i-ic:outline-insert-drive-file" v-if="item.type == 2"/>
+                &nbsp;
                 <van-col class="name-col"><span>{{ item.name }}<span v-if="item.type == 2">:</span></span></van-col>
                 <van-col v-if="item.value" class="value-col"><span>￥{{ item.value }}</span></van-col>
               </van-row>
@@ -90,6 +105,9 @@
               <div v-if="item.children" class="children-indent light-green-background">
                 <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between"
                   @click="updatePopupShow(child)">
+                  <i class="i-octicon:file-directory-open-fill-24" v-if="child.type == 1"/>
+                <i class="i-ic:outline-insert-drive-file" v-if="child.type == 2"/>
+                &nbsp;
                   <van-col class="name-col"><span>{{ child.name }}<span v-if="child.type == 2">:</span></span></van-col>
                   <van-col v-if="child.value" class="value-col"><span>￥{{ child.value }}</span></van-col>
                 </van-row>
@@ -107,6 +125,9 @@
               <!-- 父项item -->
               <van-row type="flex" justify="space-between" class="light-green-background"
                 @click="updatePopupShow(item)">
+                <i class="i-octicon:file-directory-open-fill-24" v-if="item.type == 1"/>
+                <i class="i-ic:outline-insert-drive-file" v-if="item.type == 2"/>
+                &nbsp;
                 <van-col class="name-col"><span>{{ item.name }}<span v-if="item.type == 2">:</span></span></van-col>
                 <van-col v-if="item.value" class="value-col"><span>￥{{ item.value }}</span></van-col>
               </van-row>
@@ -114,6 +135,9 @@
               <div v-if="item.children" class="children-indent light-green-background">
                 <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between"
                   @click="updatePopupShow(child)">
+                  <i class="i-octicon:file-directory-open-fill-24" v-if="child.type == 1"/>
+                <i class="i-ic:outline-insert-drive-file" v-if="child.type == 2"/>
+                &nbsp;
                   <van-col class="name-col"><span>{{ child.name }}<span v-if="child.type == 2">:</span></span></van-col>
                   <van-col v-if="child.value" class="value-col"><span>￥{{ child.value }}</span></van-col>
                 </van-row>
@@ -146,7 +170,7 @@
             <van-radio name="2" shape="square">每月</van-radio>
           </van-radio-group>
           <!-- 设置标签 -->
-          <i class="i-mdi:tag-outline" @click="tagSelectTabShow=true"/>
+          <!-- <i class="i-mdi:tag-outline" @click="tagSelectTabShow=true"/> -->
         </van-col>
         <van-button round span="4" @click="openTreeSelectTabShow" size="normal" v-if="type == '2'">选择父id</van-button>
         <van-col span="4" offset="4"><i class="i-ph:paper-plane-right-fill text-blue w-9 h-9" @click="addItem()" /></van-col>
