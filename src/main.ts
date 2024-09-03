@@ -14,7 +14,9 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router, { setupRouter } from './router'
 import { setupStore } from '@/store'
+import Vconsole from 'vconsole' // 引入 vconsole
 
+ new Vconsole()
 async function bootstrap() {
   const app = createApp(App)
   // 挂载状态管理
