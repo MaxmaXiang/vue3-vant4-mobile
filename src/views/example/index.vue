@@ -2,23 +2,21 @@
   <div class="main">
     <van-row class="head">
       <van-col span="15">
-        <van-button plain hairline type="default" size="small"
-          @click="changeToIncome()">收入状况</van-button>
-        <van-button plain hairline type="default" size="small"
-          @click="changeTopropertyShow()">资产负债表</van-button>
+        <van-button plain hairline type="default" size="small" @click="changeToIncome()">收入状况</van-button>
+        <van-button plain hairline type="default" size="small" @click="changeTopropertyShow()">资产负债表</van-button>
 
         <van-button plain hairline type="default" size="small" @click="chooseDate()">{{ currentDate.toString()
           }}</van-button>
       </van-col>
       <van-col span="1" offset="6">
-        <i class="i-ant-design:plus-circle-outlined text-blue w-8 h-8"  @click="openPopupShow()"/>
-        </van-col>
+        <i class="i-ant-design:plus-circle-outlined text-blue w-8 h-8" @click="openPopupShow()" />
+      </van-col>
     </van-row>
 
     <!-- 收入支出tab页 -->
     <div class="container" v-show="incomeShow">
       <van-cell-group>
-        <van-cell title="收入" :border="false" class="custom-cell" center />
+        <van-cell title="收入" :border="false" class="custom-cell" center /><div class="separator"/>
         <van-pull-refresh v-model="isLoadingPull" @refresh="onRefresh">
           <van-list class="scroll-list" v-model:loading="loading" :finished="finished" finished-text="没有更多了"
             @load="onLoad">
@@ -26,19 +24,14 @@
               <!-- 父项item -->
               <van-row type="flex" justify="space-between" class="light-green-background"
                 @click="updatePopupShow(item)">
-                <i class="i-octicon:file-directory-open-fill-24" v-if="item.type == 1"/>
-                <i class="i-ic:outline-insert-drive-file" v-if="item.type == 2"/>
-                &nbsp;
                 <van-col class="name-col"><span>{{ item.name }}<span v-if="item.type == 2">:</span></span></van-col>
                 <van-col v-if="item.value" class="value-col"><span>￥{{ item.value }}</span></van-col>
               </van-row>
+              <!-- <van-divider /> -->
               <!-- 子项children，使用v-for嵌套在父项下方 -->
               <div v-if="item.children" class="children-indent light-green-background">
                 <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between"
                   @click="updatePopupShow(child)">
-                  <i class="i-octicon:file-directory-open-fill-24" v-if="child.type == 1"/>
-                <i class="i-ic:outline-insert-drive-file" v-if="child.type == 2"/>
-                &nbsp;
                   <van-col class="name-col"><span>{{ child.name }}<span v-if="child.type == 2">:</span></span></van-col>
                   <van-col v-if="child.value" class="value-col"><span>￥{{ child.value }}</span></van-col>
                 </van-row>
@@ -47,8 +40,9 @@
           </van-list>
         </van-pull-refresh>
         <van-cell title="总收入" :border="false" style="height: 35px;" center class="small-green-background">{{
-          currentItemIncomeTotal }}</van-cell>
+          currentItemIncomeTotal }}</van-cell> <div class="separator"/>
         <van-cell title="支出" :border="false" style="height: 35px;" center class="custom-cell" />
+        <div class="separator"/>
         <van-pull-refresh v-model="isLoadingPull" @refresh="onRefresh">
           <van-list class="scroll-list" v-model:loading="loading" :finished="finished" finished-text="没有更多了"
             @load="onLoad">
@@ -56,9 +50,6 @@
               <!-- 父项item -->
               <van-row type="flex" justify="space-between" class="light-green-background"
                 @click="updatePopupShow(item)">
-                <i class="i-octicon:file-directory-open-fill-24" v-if="item.type == 1"/>
-                <i class="i-ic:outline-insert-drive-file" v-if="item.type == 2"/>
-                &nbsp;
                 <van-col class="name-col"><span>{{ item.name }}<span v-if="item.type == 2">:</span></span></van-col>
                 <van-col v-if="item.value" class="value-col"><span>￥{{ item.value }}</span></van-col>
               </van-row>
@@ -66,9 +57,6 @@
               <div v-if="item.children" class="children-indent light-green-background">
                 <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between"
                   @click="updatePopupShow(child)">
-                  <i class="i-octicon:file-directory-open-fill-24" v-if="child.type == 1"/>
-                <i class="i-ic:outline-insert-drive-file" v-if="child.type == 2"/>
-                &nbsp;
                   <van-col class="name-col"><span>{{ child.name }}<span v-if="child.type == 2">:</span></span></van-col>
                   <van-col v-if="child.value" class="value-col"><span>￥{{ child.value }}</span></van-col>
                 </van-row>
@@ -77,8 +65,8 @@
           </van-list>
         </van-pull-refresh>
         <van-cell title="总支出" :border="false" style="height: 35px;" center class="small-green-background">{{
-          currentItemExpendTotal }}</van-cell>
-        <van-cell title="每月净现金流" :border="false" style="height: 35px;" center >{{
+          currentItemExpendTotal }}</van-cell> <div class="separator"/>
+        <van-cell title="每月净现金流" :border="false" style="height: 35px;" center>{{
           currentItemCashFlow }}</van-cell>
 
       </van-cell-group>
@@ -87,7 +75,7 @@
     <!-- 资产负债tab页 -->
     <div class="container" v-show="propertyShow">
       <van-cell-group>
-        <van-cell title="资产" :border="false" class="custom-cell" center />
+        <van-cell title="资产" :border="false" class="custom-cell" center /> <div class="separator"/>
         <van-pull-refresh v-model="isLoadingPull" @refresh="onRefresh">
           <van-list class="scroll-list" v-model:loading="loading" :finished="finished" finished-text="没有更多了"
             @load="onLoad">
@@ -95,9 +83,7 @@
               <!-- 父项item -->
               <van-row type="flex" justify="space-between" class="light-green-background"
                 @click="updatePopupShow(item)">
-                <i class="i-octicon:file-directory-open-fill-24" v-if="item.type == 1"/>
-                <i class="i-ic:outline-insert-drive-file" v-if="item.type == 2"/>
-                &nbsp;
+
                 <van-col class="name-col"><span>{{ item.name }}<span v-if="item.type == 2">:</span></span></van-col>
                 <van-col v-if="item.value" class="value-col"><span>￥{{ item.value }}</span></van-col>
               </van-row>
@@ -105,9 +91,7 @@
               <div v-if="item.children" class="children-indent light-green-background">
                 <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between"
                   @click="updatePopupShow(child)">
-                  <i class="i-octicon:file-directory-open-fill-24" v-if="child.type == 1"/>
-                <i class="i-ic:outline-insert-drive-file" v-if="child.type == 2"/>
-                &nbsp;
+
                   <van-col class="name-col"><span>{{ child.name }}<span v-if="child.type == 2">:</span></span></van-col>
                   <van-col v-if="child.value" class="value-col"><span>￥{{ child.value }}</span></van-col>
                 </van-row>
@@ -116,8 +100,8 @@
           </van-list>
         </van-pull-refresh>
         <van-cell title="总资产" :border="false" style="height: 35px;" center class="small-green-background">{{
-          currentItemPropertyTotal }}</van-cell>
-        <van-cell title="负债" :border="false" style="height: 35px;" center class="custom-cell" />
+          currentItemPropertyTotal }}</van-cell> <div class="separator"/>
+        <van-cell title="负债" :border="false" style="height: 35px;" center class="custom-cell" /> <div class="separator"/>
         <van-pull-refresh v-model="isLoadingPull" @refresh="onRefresh">
           <van-list class="scroll-list" v-model:loading="loading" :finished="finished" finished-text="没有更多了"
             @load="onLoad">
@@ -125,9 +109,7 @@
               <!-- 父项item -->
               <van-row type="flex" justify="space-between" class="light-green-background"
                 @click="updatePopupShow(item)">
-                <i class="i-octicon:file-directory-open-fill-24" v-if="item.type == 1"/>
-                <i class="i-ic:outline-insert-drive-file" v-if="item.type == 2"/>
-                &nbsp;
+
                 <van-col class="name-col"><span>{{ item.name }}<span v-if="item.type == 2">:</span></span></van-col>
                 <van-col v-if="item.value" class="value-col"><span>￥{{ item.value }}</span></van-col>
               </van-row>
@@ -135,22 +117,21 @@
               <div v-if="item.children" class="children-indent light-green-background">
                 <van-row v-for="child in item.children" :key="child.id" type="flex" justify="space-between"
                   @click="updatePopupShow(child)">
-                  <i class="i-octicon:file-directory-open-fill-24" v-if="child.type == 1"/>
-                <i class="i-ic:outline-insert-drive-file" v-if="child.type == 2"/>
-                &nbsp;
+
                   <van-col class="name-col"><span>{{ child.name }}<span v-if="child.type == 2">:</span></span></van-col>
                   <van-col v-if="child.value" class="value-col"><span>￥{{ child.value }}</span></van-col>
                 </van-row>
               </div>
             </div>
           </van-list>
-        </van-pull-refresh>
+        </van-pull-refresh> <div class="separator"/>
         <van-cell title="总负债" :border="false" style="height: 35px;" center class="small-green-background">{{
           currentItemDebtTotal }}</van-cell>
       </van-cell-group>
     </div>
     <!-- 新增修改弹窗 -->
-    <van-popup v-model:show="popupShow" round transition-appear:true position="bottom" :style="{ height: '30%' }" @click-overlay="closePopupShow()">
+    <van-popup v-model:show="popupShow" round transition-appear:true position="bottom" :style="{ height: '30%' }"
+      @click-overlay="closePopupShow()">
 
       <van-row>
         <van-col span="10">
@@ -173,15 +154,17 @@
           <!-- <i class="i-mdi:tag-outline" @click="tagSelectTabShow=true"/> -->
         </van-col>
         <van-button round span="4" @click="openTreeSelectTabShow" size="normal" v-if="type == '2'">选择父id</van-button>
-        <van-col span="4" offset="4"><i class="i-ph:paper-plane-right-fill text-blue w-9 h-9" @click="addItem()" /></van-col>
+        <van-col span="4" offset="4"><i class="i-ph:paper-plane-right-fill text-blue w-9 h-9"
+            @click="addItem()" /></van-col>
       </van-row>
 
 
       <van-field v-model="itemName" label="名称" placeholder="请输入名称" />
-      <van-field v-model="itemValue" label="值" placeholder="请输入值" v-if="type == '2'"/>
+      <van-field v-model="itemValue" label="值" placeholder="请输入值" v-if="type == '2'" />
 
       <div class="flex justify-end mt-4"> <!-- 添加这个Flex容器并应用靠右对齐 -->
-        <i class="i-ant-design:delete-twotone mr-2 text-lg" @click="deleteItem" style="color: red;" v-if="itemId != 0"/>
+        <i class="i-ant-design:delete-twotone mr-2 text-lg" @click="deleteItem" style="color: red;"
+          v-if="itemId != 0" />
       </div>
     </van-popup>
 
@@ -201,18 +184,18 @@
         :columns-field-names="customFieldName" />
     </van-popup>
 
-<!-- 标签选择弹窗 -->
-<van-popup v-model:show="tagSelectTabShow" position="bottom" :style="{ height: '30%' }"
+    <!-- 标签选择弹窗 -->
+    <van-popup v-model:show="tagSelectTabShow" position="bottom" :style="{ height: '30%' }"
       @click-overlay="closeTagTab()">
       <van-picker title="选择标签" :columns="itemTags" @confirm="onTagConfirm" @cancel="closeTagTab" @change="onChange"
-      :columns-field-names="tagFieldName" />
+        :columns-field-names="tagFieldName" />
     </van-popup>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useMouseStore, ItemList, Item,ItemTag } from '@/store/modules/mouse'
-import {  showToast } from 'vant';
+import { useMouseStore, ItemList, Item, ItemTag } from '@/store/modules/mouse'
+import { showToast } from 'vant';
 import { createStorage } from '@/utils/Storage'
 import { onMounted } from 'vue'
 import router from '@/router'
@@ -310,7 +293,7 @@ function closePopupShow() {
   itemName.value = ""
   itemId.value = 0
   itemloopMode.value = ""
-  itemTags.value=[]
+  itemTags.value = []
   popupShow.value = false
 }
 
@@ -323,7 +306,7 @@ function openPopupShow() {
   itemId.value = 0
   itemloopMode.value = ""
   popupShow.value = true
-  itemTags.value=[]
+  itemTags.value = []
 }
 
 //更新项
@@ -336,7 +319,7 @@ function updatePopupShow(item: Item) {
   itemName.value = item.name
   itemloopMode.value = String(item.loopMode) as string
   popupShow.value = true
-  itemTags.value=item.tagList
+  itemTags.value = item.tagList
 }
 
 onMounted(async () => {
@@ -362,7 +345,7 @@ function openTreeSelectTabShow() {
 async function addItem() {
   if (itemId.value == 0) {
     let item = {
-      loopMode:itemloopMode.value,
+      loopMode: itemloopMode.value,
       userName: Storage.get("username"),
       date: currentDate.value[0] + "-" + currentDate.value[1] + "-01",
       type: type.value,
@@ -383,7 +366,7 @@ async function addItem() {
     }
   } else {
     let item = {
-      loopMode:itemloopMode.value,
+      loopMode: itemloopMode.value,
       id: itemId.value,
       userName: Storage.get("username"),
       date: currentDate.value[0] + "-" + currentDate.value[1] + "-01",
@@ -498,7 +481,7 @@ onMounted(async () => {
 });
 
 
-async function queryEcharts(){
+async function queryEcharts() {
   let item = {
     period: 1,
     userName: Storage.get("username"),
@@ -596,7 +579,6 @@ let activeIndex = ref(0);
 }
 
 .custom-cell {
-  background-color: #846994;
   /* 紫色背景 */
   color: black;
   /* 白色文字 */
@@ -604,12 +586,18 @@ let activeIndex = ref(0);
 }
 
 .light-green-background {
-  background-color: #C4ECCA;
+
   /* 浅绿色背景 */
 }
 
 .small-green-background {
-  background-color: #D6EBDE;
+
   /* 浅绿色背景 */
+}
+.separator {
+  border-bottom: 1px solid #ccc; /* 灰色的1像素宽的分隔线 */
+  margin: 0; /* 移除默认的外边距 */
+  padding: 0; /* 移除默认的内边距 */
+  height: 0; /* 设置高度为0，确保分隔线不占用额外的空间 */
 }
 </style>
